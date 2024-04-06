@@ -14,7 +14,7 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
     [SerializeField] private float aimSensitivity;
     [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
     //[SerializeField] private Transform debugTransform;
-    [SerializeField] private GameObject bulletPrefab; // Change to GameObject
+    [SerializeField] private GameObject bulletPrefab; 
     [SerializeField] private Transform spawnBulletPosition;
     //[SerializeField] private Transform vfxHitGreen;
     //[SerializeField] private Transform vfxHitRed;
@@ -46,7 +46,7 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
 
             if (starterAssetsInputs.aim)
             {
-                //aimVirtualCamera.gameObject.SetActive(true);
+                aimVirtualCamera.gameObject.SetActive(true);
                 thirdPersonController.SetSensitivity(aimSensitivity);
                 thirdPersonController.SetRotateOnMove(false);
 
@@ -67,7 +67,7 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
             }
             else
             {
-                //aimVirtualCamera.gameObject.SetActive(false);
+                aimVirtualCamera.gameObject.SetActive(false);
                 thirdPersonController.SetSensitivity(normalSensitivity);
                 thirdPersonController.SetRotateOnMove(true);
 

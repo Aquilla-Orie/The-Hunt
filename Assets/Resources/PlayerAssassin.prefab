@@ -3217,6 +3217,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerHUDCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 4410851394245484831, guid: 24c823adb73800d4b852a3ff51f214b7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4410851394369258847, guid: 24c823adb73800d4b852a3ff51f214b7, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
