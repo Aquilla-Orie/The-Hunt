@@ -10,6 +10,7 @@ using Photon.Pun;
 public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
 {
     [SerializeField] private CinemachineVirtualCamera aimVirtualCamera;
+    [SerializeField] private GameObject crosshairs;
     [SerializeField] private float normalSensitivity;
     [SerializeField] private float aimSensitivity;
     [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
@@ -49,6 +50,8 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
             if (starterAssetsInputs.aim)
             {
                 aimVirtualCamera.gameObject.SetActive(true);
+                crosshairs.SetActive(true);
+
                 thirdPersonController.SetSensitivity(aimSensitivity);
                 thirdPersonController.SetRotateOnMove(false);
 
@@ -70,6 +73,7 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
             else
             {
                 aimVirtualCamera.gameObject.SetActive(false);
+                crosshairs.SetActive(false);
                 thirdPersonController.SetSensitivity(normalSensitivity);
                 thirdPersonController.SetRotateOnMove(true);
 

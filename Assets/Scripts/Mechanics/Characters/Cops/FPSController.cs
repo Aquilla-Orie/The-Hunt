@@ -9,6 +9,7 @@ using Photon.Pun;
 
 public class FPSController : MonoBehaviourPunCallbacks
 {
+    [SerializeField] private GameObject crosshairs;
     [SerializeField] private float normalSensitivity;
     [SerializeField] private float aimSensitivity;
     [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
@@ -47,6 +48,7 @@ public class FPSController : MonoBehaviourPunCallbacks
 
             if (starterAssetsInputs.aim)
             {
+                crosshairs.SetActive(true);
                 thirdPersonController.SetSensitivity(aimSensitivity);
                 thirdPersonController.SetRotateOnMove(false);
 
@@ -67,6 +69,7 @@ public class FPSController : MonoBehaviourPunCallbacks
             }
             else
             {
+                crosshairs.SetActive(false);
                 thirdPersonController.SetSensitivity(normalSensitivity);
                 thirdPersonController.SetRotateOnMove(true);
 
@@ -82,6 +85,8 @@ public class FPSController : MonoBehaviourPunCallbacks
     {
         muzzleFlash.Play();
         Ray ray = new Ray(spawnBulletPosition.position, spawnBulletPosition.forward);
+
+        Debug.DrawRay(spawnBulletPosition.position, spawnBulletPosition.forward * 100f, Color.red, 1f);
 
         if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
