@@ -6,6 +6,7 @@ using Photon.Pun;
 public class BulletProjectile : MonoBehaviourPunCallbacks
 {
     [SerializeField] private float damageAmount = 10f;
+
     private Rigidbody bulletRigidbody;
 
     private void Awake()
@@ -18,7 +19,7 @@ public class BulletProjectile : MonoBehaviourPunCallbacks
         float speed = 40f;
         bulletRigidbody.velocity = transform.forward * speed;
 
-        Destroy(gameObject, 2f);
+        Destroy(gameObject, 5f);
     }
 
     void Update()

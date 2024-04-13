@@ -14,11 +14,13 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
     [SerializeField] private float aimSensitivity;
     [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
     //[SerializeField] private Transform debugTransform;
-    [SerializeField] private GameObject bulletPrefab; 
+    //[SerializeField] private GameObject bulletPrefab; 
     [SerializeField] private Transform spawnBulletPosition;
     //[SerializeField] private Transform vfxHitGreen;
     //[SerializeField] private Transform vfxHitRed;
     [SerializeField] private Animator animator;
+
+    public ParticleSystem muzzleFlash;
 
     private ThirdPersonController thirdPersonController;
     private StarterAssetsInputs starterAssetsInputs;
@@ -83,8 +85,26 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_Shoot(Vector3 mousePosition)
     {
+        muzzleFlash.Play();
         Vector3 aimDirection = (mousePosition - spawnBulletPosition.position).normalized;
-        PhotonNetwork.Instantiate(bulletPrefab.name, spawnBulletPosition.position, Quaternion.LookRotation(aimDirection, Vector3.up));
+        Ray ray = new Ray(spawnBulletPosition.position, aimDirection);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+        {
+            var enemyPlayerHealth = hit.collider.GetComponent<PlayerStats>();
+
+            if (enemyPlayerHealth != null)
+            {
+                enemyPlayerHealth.TakeDamage(10);
+            }
+
+            if (photonView.IsMine)
+            {
+                PhotonNetwork.Destroy(gameObject);
+            }
+        }
+
         starterAssetsInputs.shoot = false;
     }
+
 }

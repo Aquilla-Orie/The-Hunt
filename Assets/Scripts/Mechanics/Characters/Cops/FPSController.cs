@@ -13,11 +13,13 @@ public class FPSController : MonoBehaviourPunCallbacks
     [SerializeField] private float aimSensitivity;
     [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
     //[SerializeField] private Transform debugTransform;
-    [SerializeField] private GameObject bulletPrefab;
+    //[SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform spawnBulletPosition;
     //[SerializeField] private Transform vfxHitGreen;
     //[SerializeField] private Transform vfxHitRed;
     [SerializeField] private Animator animator;
+
+    public ParticleSystem muzzleFlash;
 
     private ThirdPersonController thirdPersonController;
     private StarterAssetsInputs starterAssetsInputs;
@@ -60,7 +62,7 @@ public class FPSController : MonoBehaviourPunCallbacks
                 if (starterAssetsInputs.shoot)
                 {
                     // Call RPC_Shoot with the mouseWorldPosition as a parameter
-                    photonView.RPC("RPC_Shoot", RpcTarget.All, mouseWorldPosition);
+                    photonView.RPC("RPC_Shoot", RpcTarget.All); //, mouseWorldPosition);
                 }
             }
             else
@@ -72,16 +74,30 @@ public class FPSController : MonoBehaviourPunCallbacks
                 starterAssetsInputs.shoot = false;
 
             }
-
-
         }
     }
 
     [PunRPC]
-    void RPC_Shoot(Vector3 mousePosition)
+    void RPC_Shoot()
     {
-        Vector3 aimDirection = (mousePosition - spawnBulletPosition.position).normalized;
-        PhotonNetwork.Instantiate(bulletPrefab.name, spawnBulletPosition.position, Quaternion.LookRotation(aimDirection, Vector3.up));
+        muzzleFlash.Play();
+        Ray ray = new Ray(spawnBulletPosition.position, spawnBulletPosition.forward);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+        {
+            var enemyPlayerHealth = hit.collider.GetComponent<PlayerStats>();
+
+            if (enemyPlayerHealth != null)
+            {
+                enemyPlayerHealth.TakeDamage(10);
+            }
+
+            if (photonView.IsMine)
+            {
+                PhotonNetwork.Destroy(gameObject);
+            }
+        }
+
         starterAssetsInputs.shoot = false;
     }
 }

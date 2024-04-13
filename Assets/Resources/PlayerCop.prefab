@@ -3067,7 +3067,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 0
+  currentHealth: 100
   healthBar: {fileID: 2050171948}
 --- !u!114 &650301462
 MonoBehaviour:
@@ -3104,12 +3104,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   normalSensitivity: 1
-  aimSensitivity: 0
+  aimSensitivity: 0.5
   aimColliderLayerMask:
     serializedVersion: 2
     m_Bits: 1
   bulletPrefab: {fileID: 6609753933840824097, guid: 2f1ffaa8353e36d40a20c2a766f190e5, type: 3}
-  spawnBulletPosition: {fileID: 0}
+  spawnBulletPosition: {fileID: 1221494745}
   animator: {fileID: 1507583242147621782}
 --- !u!114 &650301463
 MonoBehaviour:
