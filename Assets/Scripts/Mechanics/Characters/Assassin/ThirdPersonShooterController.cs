@@ -97,11 +97,6 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
             {
                 enemyPlayerHealth.TakeDamage(10);
             }
-
-            if (photonView.IsMine)
-            {
-                PhotonNetwork.Destroy(gameObject);
-            }
         }
 
         starterAssetsInputs.shoot = false;
