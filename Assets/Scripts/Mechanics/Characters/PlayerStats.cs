@@ -11,7 +11,7 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
     Renderer[] visuals;
 
     public HealthBar healthBar;
-    public GameManager gameManager;
+    //public GameManager gameManager;
 
     void Start()
     {
@@ -45,7 +45,7 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
     {
         VisualiseRenderers(false);
         GetComponent<CharacterController>().enabled = false;
-        gameManager.GameOver();
+        //gameManager.GameOver();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
