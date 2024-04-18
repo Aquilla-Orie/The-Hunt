@@ -99,7 +99,7 @@ public class FPSController : MonoBehaviourPunCallbacks
 
             if (photonView.IsMine)
             {
-                PhotonNetwork.Destroy(gameObject);
+                //PhotonNetwork.Destroy(gameObject);
             }
         }
 

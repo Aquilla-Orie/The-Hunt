@@ -72,9 +72,19 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void CreateRoom()
     {
-        _roomName = _roomNameInput.text;
+        _roomName = _roomNameInput.text.Trim();
         if (_roomName != "")
         {
+            for (int i = 0; i < _createdRooms.Count; i++)
+            {
+                string roomName = _createdRooms[i].Name;
+                if (string.Equals(roomName, _roomName))
+                {
+                    Debug.Log($"Room {_roomName} already exists! please use another room name");
+                    _roomNameInput.text = "";
+                    return;
+                }
+            }
             _joiningRoom = true;
 
             RoomOptions roomOptions = new RoomOptions();
@@ -113,6 +123,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             string roomName = _createdRooms[i].Name;
             int roomCount = _createdRooms[i].PlayerCount;
             int roomMax = _createdRooms[i].MaxPlayers;
+            int roomID = _createdRooms[i].masterClientId;
 
             //Set the room name
             panel.transform.GetChild(0).GetComponent<TMP_Text>().text = roomName;
@@ -121,8 +132,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             panel.transform.GetChild(1).GetComponent<TMP_Text>().text = $"{roomCount}/{roomMax}";
 
             //Set join button function
-            panel.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => { JoinRoom(roomName);
+            //panel.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => { JoinRoom(roomName);
+            //});
+
+            //Set Join as Cop
+            Button jCopButton = panel.transform.GetChild(2).GetComponent<Button>();
+            jCopButton.onClick.AddListener(() => { JoinRoomCop(jCopButton);
             });
+            //Set Join as Assassin
+            Button jAssButton = panel.transform.GetChild(3).GetComponent<Button>();
+            jAssButton.onClick.AddListener(() => { JoinRoomAssassin(jAssButton);
+            });
+            panel.transform.GetChild(4).GetComponent<TMP_Text>().text = $"{roomID}";
         }
     }
 
@@ -132,6 +153,45 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         _joiningRoom = true;
         PhotonNetwork.NickName = _playerName;
         PhotonNetwork.JoinRoom(roomName);
+    }
+    private void JoinRoomCop(Button button)
+    {
+        //PlayAsCop();
+        GameObject panel = button.transform.parent.gameObject;
+        string selectedRoomName = panel.transform.GetChild(0).GetComponent<TMP_Text>().text;
+        for (int i = 0; i < _createdRooms.Count; i++)
+        {
+            string rname = _createdRooms[i].Name;
+            if (string.Equals(rname, selectedRoomName))
+            {
+                Debug.Log($"Joining {selectedRoomName}");
+                _roomNameInput.text = "";
+                //return;
+            }
+        }
+        _joiningRoom = true;
+        _isAssassin = false;
+        //PhotonNetwork.NickName = _playerName;
+        PhotonNetwork.JoinRoom(selectedRoomName);
+    }
+    private void JoinRoomAssassin(Button button)
+    {
+        GameObject panel = button.transform.parent.gameObject;
+        string selectedRoomName = panel.transform.GetChild(0).GetComponent<TMP_Text>().text;
+        for (int i = 0; i < _createdRooms.Count; i++)
+        {
+            string rname = _createdRooms[i].Name;
+            if (string.Equals(rname, selectedRoomName))
+            {
+                Debug.Log($"Joining {selectedRoomName}");
+                _roomNameInput.text = "";
+                //return;
+            }
+        }
+        _joiningRoom = true;
+        _isAssassin = true;
+        //PhotonNetwork.NickName = _playerName;
+        PhotonNetwork.JoinRoom(selectedRoomName);
     }
     public override void OnJoinedLobby()
     {
@@ -149,7 +209,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Debug.Log($"Nick {player.NickName}:::Play {_playerName} just joined the lobby");
         bool is_ass = (bool)player.CustomProperties["isAssassin"];
 
-        if (is_ass)
+        if (_isAssassin)
         {
             PhotonNetwork.Instantiate(_playerAssassin.name, new Vector2(4, 1.5f), Quaternion.identity, 0);
         }
