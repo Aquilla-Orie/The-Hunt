@@ -10,15 +10,18 @@ using Photon.Pun;
 public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
 {
     [SerializeField] private CinemachineVirtualCamera aimVirtualCamera;
+    [SerializeField] private GameObject crosshairs;
     [SerializeField] private float normalSensitivity;
     [SerializeField] private float aimSensitivity;
     [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
     //[SerializeField] private Transform debugTransform;
-    [SerializeField] private GameObject bulletPrefab; // Change to GameObject
+    //[SerializeField] private GameObject bulletPrefab; 
     [SerializeField] private Transform spawnBulletPosition;
     //[SerializeField] private Transform vfxHitGreen;
     //[SerializeField] private Transform vfxHitRed;
     [SerializeField] private Animator animator;
+
+    public ParticleSystem muzzleFlash;
 
     private ThirdPersonController thirdPersonController;
     private StarterAssetsInputs starterAssetsInputs;
@@ -46,7 +49,9 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
 
             if (starterAssetsInputs.aim)
             {
-                //aimVirtualCamera.gameObject.SetActive(true);
+                aimVirtualCamera.gameObject.SetActive(true);
+                crosshairs.SetActive(true);
+
                 thirdPersonController.SetSensitivity(aimSensitivity);
                 thirdPersonController.SetRotateOnMove(false);
 
@@ -67,7 +72,8 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
             }
             else
             {
-                //aimVirtualCamera.gameObject.SetActive(false);
+                aimVirtualCamera.gameObject.SetActive(false);
+                crosshairs.SetActive(false);
                 thirdPersonController.SetSensitivity(normalSensitivity);
                 thirdPersonController.SetRotateOnMove(true);
 
@@ -83,8 +89,21 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_Shoot(Vector3 mousePosition)
     {
+        muzzleFlash.Play();
         Vector3 aimDirection = (mousePosition - spawnBulletPosition.position).normalized;
-        PhotonNetwork.Instantiate(bulletPrefab.name, spawnBulletPosition.position, Quaternion.LookRotation(aimDirection, Vector3.up));
+        Ray ray = new Ray(spawnBulletPosition.position, aimDirection);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+        {
+            var enemyPlayerHealth = hit.collider.GetComponent<PlayerStats>();
+
+            if (enemyPlayerHealth != null)
+            {
+                enemyPlayerHealth.TakeDamage(10);
+            }
+        }
+
         starterAssetsInputs.shoot = false;
     }
+
 }

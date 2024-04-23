@@ -11,6 +11,7 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
     Renderer[] visuals;
 
     public HealthBar healthBar;
+    //public GameManager gameManager;
 
     void Start()
     {
@@ -31,11 +32,20 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
         if (currentHealth <= 0)
         {
             // Game over or respawn - can change in settings??
-            StartCoroutine(Respawn());
+            //StartCoroutine(Respawn());
+
+            Die();
         }
 
         // Update health bar UI across the network
        // photonView.RPC("RPC_UpdateHealth", RpcTarget.All, currentHealth);
+    }
+
+    void Die()
+    {
+        VisualiseRenderers(false);
+        GetComponent<CharacterController>().enabled = false;
+        //gameManager.GameOver();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -58,7 +68,8 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
     }*/
 
     // Adding Respawn for testing and optional feature
-    IEnumerator Respawn()
+
+   /* IEnumerator Respawn()
     {
         VisualiseRenderers(false);
         currentHealth = maxHealth;
@@ -68,7 +79,7 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
         yield return new WaitForSeconds(1);
         GetComponent<CharacterController>().enabled = true;
         VisualiseRenderers(true);
-    }
+    }*/
 
     void VisualiseRenderers(bool state)
     {
