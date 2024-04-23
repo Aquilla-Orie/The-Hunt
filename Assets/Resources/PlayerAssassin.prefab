@@ -231,8 +231,8 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 766fd3ff04aab4745a764d33daac86fa, type: 2}
   - {fileID: 2100000, guid: 43714b68324cc2c409d534d9874f2a2b, type: 2}
+  - {fileID: 2100000, guid: 766fd3ff04aab4745a764d33daac86fa, type: 2}
   - {fileID: 2100000, guid: 8b25e99361ac31d4e9ae83c46aee69ea, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -2041,7 +2041,7 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 1
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
@@ -2098,8 +2098,10 @@ MonoBehaviour:
     SynchronizeType: 1
     Name: MotionSpeed
   m_SynchronizeLayers:
-  - SynchronizeType: 0
+  - SynchronizeType: 1
     LayerIndex: 0
+  - SynchronizeType: 1
+    LayerIndex: 1
 --- !u!114 &5922199710417063910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2122,12 +2124,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5280468917016849238}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bae500d87c0811b49badb85b0d942a56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   aimVirtualCamera: {fileID: 311672928}
+  crosshairs: {fileID: 0}
   normalSensitivity: 1
   aimSensitivity: 0.5
   aimColliderLayerMask:
