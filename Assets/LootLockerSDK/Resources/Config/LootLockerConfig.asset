@@ -12,20 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 182cd195a28310e479cddf7ff82822f8, type: 3}
   m_Name: LootLockerConfig
   m_EditorClassIdentifier: 
-  apiKey: dev_43f3fd3ef3e94349a81fb0931269a47d
-  token: 49080cb76a12315da53d66e19d8e29356a7709cb
+  apiKey: 
+  token: 
   adminToken: 
   refreshToken: 
-  domainKey: rostpzo7
+  domainKey: 
   gameID: 0
   game_version: 1.0.0.0
-  sdk_version: 2.1.3
-  deviceID: 
+  sdk_version: 
+  deviceID: defaultPlayerId
   url: https://api.lootlocker.io/v1
-  adminUrl: https://rostpzo7.api.lootlocker.io/admin
-  playerUrl: https://rostpzo7.api.lootlocker.io/player
-  userUrl: https://rostpzo7.api.lootlocker.io/game
-  baseUrl: https://rostpzo7.api.lootlocker.io
+  adminUrl: https://api.lootlocker.io/admin
+  playerUrl: https://api.lootlocker.io/player
+  userUrl: https://api.lootlocker.io/game
+  baseUrl: https://api.lootlocker.io
   clientSideRequestTimeOut: 5
   currentDebugLevel: 0
   allowTokenRefresh: 1
