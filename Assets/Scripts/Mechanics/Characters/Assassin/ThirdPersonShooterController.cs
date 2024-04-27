@@ -15,10 +15,7 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
     [SerializeField] private float aimSensitivity;
     [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
     //[SerializeField] private Transform debugTransform;
-    //[SerializeField] private GameObject bulletPrefab; 
     [SerializeField] private Transform spawnBulletPosition;
-    //[SerializeField] private Transform vfxHitGreen;
-    //[SerializeField] private Transform vfxHitRed;
     [SerializeField] private Animator animator;
 
     public ParticleSystem muzzleFlash;
@@ -45,6 +42,7 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
             if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
             {
                 mouseWorldPosition = raycastHit.point;
+                //debugTransform.position = raycastHit.point;
             }
 
             if (starterAssetsInputs.aim)
@@ -63,10 +61,8 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
 
                 transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
 
-                //Only allow player to shoot when aiming
                 if (starterAssetsInputs.shoot)
                 {
-                    // Call RPC_Shoot with the mouseWorldPosition as a parameter
                     photonView.RPC("RPC_Shoot", RpcTarget.All, mouseWorldPosition);
                 }
             }
@@ -79,10 +75,7 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
 
                 animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0, Time.deltaTime * 10f));
                 starterAssetsInputs.shoot = false;
-
             }
-
-            
         }
     }
 
@@ -105,5 +98,4 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
 
         starterAssetsInputs.shoot = false;
     }
-
 }

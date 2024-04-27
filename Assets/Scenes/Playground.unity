@@ -2189,7 +2189,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 300}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1323168330
@@ -3408,7 +3408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a024b4152e9252488482d718c3940e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerAssassin: {fileID: 8362037021859657455, guid: c3c3105a8bbde4a48961e861e2ba8938, type: 3}
+  _playerAssassin: {fileID: 8362037021859657455, guid: 856fd7075a10a1c4992ba7a632a6d03e, type: 3}
   _playerCop: {fileID: 8362037021859657455, guid: eed7edc675d763f42b7de2f7ffcd43c0, type: 3}
   _networkUICanvas: {fileID: 992477896}
   _roomScrollView: {fileID: 1323168329}

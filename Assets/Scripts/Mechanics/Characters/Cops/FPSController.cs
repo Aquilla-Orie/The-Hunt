@@ -14,10 +14,7 @@ public class FPSController : MonoBehaviourPunCallbacks
     [SerializeField] private float aimSensitivity;
     [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
     //[SerializeField] private Transform debugTransform;
-    //[SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform spawnBulletPosition;
-    //[SerializeField] private Transform vfxHitGreen;
-    //[SerializeField] private Transform vfxHitRed;
     [SerializeField] private Animator animator;
 
     public ParticleSystem muzzleFlash;
@@ -44,6 +41,7 @@ public class FPSController : MonoBehaviourPunCallbacks
             if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
             {
                 mouseWorldPosition = raycastHit.point;
+                //debugTransform.position = raycastHit.point;
             }
 
             if (starterAssetsInputs.aim)
@@ -60,10 +58,8 @@ public class FPSController : MonoBehaviourPunCallbacks
 
                 transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
 
-                //Only allow player to shoot when aiming
                 if (starterAssetsInputs.shoot)
                 {
-                    // Call RPC_Shoot with the mouseWorldPosition as a parameter
                     photonView.RPC("RPC_Shoot", RpcTarget.All); //, mouseWorldPosition);
                 }
             }
@@ -75,7 +71,6 @@ public class FPSController : MonoBehaviourPunCallbacks
 
                 animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0, Time.deltaTime * 10f));
                 starterAssetsInputs.shoot = false;
-
             }
         }
     }
@@ -86,8 +81,6 @@ public class FPSController : MonoBehaviourPunCallbacks
         muzzleFlash.Play();
         Ray ray = new Ray(spawnBulletPosition.position, spawnBulletPosition.forward);
 
-        Debug.DrawRay(spawnBulletPosition.position, spawnBulletPosition.forward * 100f, Color.red, 1f);
-
         if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
             var enemyPlayerHealth = hit.collider.GetComponent<PlayerStats>();
@@ -95,11 +88,6 @@ public class FPSController : MonoBehaviourPunCallbacks
             if (enemyPlayerHealth != null)
             {
                 enemyPlayerHealth.TakeDamage(10);
-            }
-
-            if (photonView.IsMine)
-            {
-                //PhotonNetwork.Destroy(gameObject);
             }
         }
 
