@@ -45,7 +45,7 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
                 mouseWorldPosition = raycastHit.point;
                 //debugTransform.position = raycastHit.point;
 
-                if (raycastHit.collider != null && raycastHit.collider.CompareTag("HealthPack"))
+                /*if (raycastHit.collider != null && raycastHit.collider.CompareTag("HealthPack"))
                 {
                     if (Vector3.Distance(transform.position, raycastHit.point) <= 2f)
                     {
@@ -61,7 +61,7 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
                 else
                 {
                     healthPackUI.SetActive(false);
-                }
+                }*/
             }
 
             if (starterAssetsInputs.aim)
