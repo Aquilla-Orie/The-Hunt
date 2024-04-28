@@ -11,6 +11,7 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
 {
     [SerializeField] private CinemachineVirtualCamera aimVirtualCamera;
     [SerializeField] private GameObject crosshairs;
+    [SerializeField] private GameObject healthPackUI;
     [SerializeField] private float normalSensitivity;
     [SerializeField] private float aimSensitivity;
     [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
@@ -43,6 +44,24 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
             {
                 mouseWorldPosition = raycastHit.point;
                 //debugTransform.position = raycastHit.point;
+
+                if (raycastHit.collider != null && raycastHit.collider.CompareTag("HealthPack"))
+                {
+                    if (Vector3.Distance(transform.position, raycastHit.point) <= 2f)
+                    {
+                        healthPackUI.SetActive(true);
+                        healthPackUI.transform.LookAt(healthPackUI.transform.position + Camera.main.transform.rotation * Vector3.forward,
+                            Camera.main.transform.rotation * Vector3.up);
+                    }
+                    else
+                    {
+                        healthPackUI.SetActive(false);
+                    }
+                }
+                else
+                {
+                    healthPackUI.SetActive(false);
+                }
             }
 
             if (starterAssetsInputs.aim)

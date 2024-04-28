@@ -27,6 +27,12 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
         healthBar.SetSlider(currentHealth);
     }
 
+    public void RestoreHealth(float amount)
+    {
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        healthBar.SetSlider(currentHealth);
+    }
+
     void Update()
     {
         if (currentHealth <= 0)
