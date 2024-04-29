@@ -1857,8 +1857,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyCamera: {fileID: 7545372061088299137}
-  MoveSpeed: 2
-  SprintSpeed: 5.335
+  MoveSpeed: 7
+  SprintSpeed: 15
   RotationSmoothTime: 0.12
   SpeedChangeRate: 10
   Sensitivity: 1
@@ -1925,6 +1925,7 @@ MonoBehaviour:
   sprint: 0
   aim: 0
   shoot: 0
+  interact: 0
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1
@@ -2659,7 +2660,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7545372061088299137}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.49999994, y: 0.25, z: -1.9499998}
+  m_LocalPosition: {x: 0.25718474, y: 0.16328025, z: 2.7200003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7545372061551265978}

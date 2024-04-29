@@ -10,6 +10,7 @@ public class InteractionManager : MonoBehaviour
 {
     [SerializeField] private StarterAssetsInputs _starterAssetsInputs;
     [SerializeField] private List<Interactable> _interactables;
+    [SerializeField] private Inventory _inventory;
 
     private void Start()
     {
@@ -33,9 +34,9 @@ public class InteractionManager : MonoBehaviour
                     }
                 }
 
-                closest.Interact();
+                closest.Interact(this);
             }
-
+            _starterAssetsInputs.interact = false;
         }
     }
 
@@ -55,5 +56,10 @@ public class InteractionManager : MonoBehaviour
         {
             _interactables.Remove(interactable);
         }
+    }
+
+    public void AddItemToInventory(Item item)
+    {
+        _inventory.AddItem(item);
     }
 }
