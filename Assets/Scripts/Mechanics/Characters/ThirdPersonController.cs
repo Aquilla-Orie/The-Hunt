@@ -106,6 +106,8 @@ namespace StarterAssets
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
 
+
+
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
         private PlayerInput _playerInput;
 #endif
@@ -113,6 +115,9 @@ namespace StarterAssets
         private CharacterController _controller;
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
+        private GameObject leaderboardCanvas;
+        private GameObject leaderboardPanel;
+
         private bool _rotateOnMove = true;
 
         private const float _threshold = 0.01f;
@@ -130,7 +135,6 @@ namespace StarterAssets
 #endif
             }
         }
-
 
         private void Awake()
         {
@@ -153,6 +157,24 @@ namespace StarterAssets
 #else
 			Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
 #endif
+            leaderboardCanvas = GameObject.Find("LeaderboardCanvas");
+            if (leaderboardCanvas == null)
+            {
+                Debug.LogError("leaderboardCanvas GameObject not found in the scene.");
+            }
+            else
+            {
+                leaderboardPanel = leaderboardCanvas.transform.Find("Panel").gameObject; 
+                if (leaderboardPanel == null)
+                {
+                    Debug.LogError("Leaderboard Panel not found in the scene.");
+                }
+                else
+                {
+                    leaderboardPanel.SetActive(false);
+                }
+            }
+
 
             AssignAnimationIDs();
 
@@ -171,6 +193,7 @@ namespace StarterAssets
                 JumpAndGravity();
                 GroundedCheck();
                 Move();
+                HandleLeaderboardInput();
             }
         }
 
@@ -449,6 +472,28 @@ namespace StarterAssets
             if (photonView.IsMine)
             {
                 photonView.RPC("DisableOtherCameras", RpcTarget.OthersBuffered);
+            }
+        }
+
+        private void HandleLeaderboardInput()
+        {
+            if (_input.leaderboard)
+            {
+                Debug.Log("leaderboard panel state:" + leaderboardPanel.activeSelf);
+
+                if (leaderboardPanel != null)
+                {
+                    bool currentState = leaderboardPanel.activeSelf;
+
+                    leaderboardPanel.SetActive(!currentState);
+                    Debug.Log("Leaderboard Panel state changed: " + (!currentState ? "Active" : "Inactive"));
+                }
+                else
+                {
+                    Debug.LogError("Leaderboard Panel is not assigned or found in the scene.");
+                }
+
+                _input.leaderboard = false;
             }
         }
     }

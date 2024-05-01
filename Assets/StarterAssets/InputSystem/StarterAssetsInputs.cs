@@ -15,7 +15,8 @@ namespace StarterAssets
         public bool sprint;
         public bool aim;
         public bool shoot;
-		public bool interact;
+        public bool interact;
+        public bool leaderboard;
 
         [Header("Movement Settings")]
 		public bool analogMovement;
@@ -62,6 +63,11 @@ namespace StarterAssets
 		{
 			InteractInput(value.isPressed);
 		}
+
+		public void OnLeaderboard(InputValue value)
+		{
+			LeaderboardInput(value.isPressed);
+		}
 #endif
 
 
@@ -99,6 +105,11 @@ namespace StarterAssets
 		{
 			interact = newInteractState;
 		}
+
+        public void LeaderboardInput(bool newLeaderboardState)
+        {
+            leaderboard = newLeaderboardState;
+        }
 
         private void OnApplicationFocus(bool hasFocus)
 		{

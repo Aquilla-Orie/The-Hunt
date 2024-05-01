@@ -2,16 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using LootLocker.Requests;
 
 public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
 {
     public float maxHealth = 100f;
     public float currentHealth;
 
+    public int kills;
+    public int deaths;
+    public int damageDealt;
+
     Renderer[] visuals;
 
     public HealthBar healthBar;
-    //public GameManager gameManager;
+    public GameManagerScript gameManager;
+    public Leaderboard leaderboard;
 
     void Start()
     {
@@ -19,6 +25,14 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
 
         currentHealth = maxHealth;
         healthBar.SetSliderMax(maxHealth);
+    }
+
+    void Update()
+    {
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
     }
 
     public void TakeDamage(float amount)
@@ -33,25 +47,24 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
         healthBar.SetSlider(currentHealth);
     }
 
-    void Update()
-    {
-        if (currentHealth <= 0)
-        {
-            // Game over or respawn - can change in settings??
-            //StartCoroutine(Respawn());
-
-            Die();
-        }
-
-        // Update health bar UI across the network
-       // photonView.RPC("RPC_UpdateHealth", RpcTarget.All, currentHealth);
-    }
-
-    void Die()
+    public void Die()
     {
         VisualiseRenderers(false);
         GetComponent<CharacterController>().enabled = false;
-        //gameManager.GameOver();
+
+        Transform playerHUDCanvasTransform = transform.Find("PlayerHUDCanvas");
+        if (playerHUDCanvasTransform != null)
+        {
+            GameObject playerHUDCanvas = playerHUDCanvasTransform.gameObject;
+            playerHUDCanvas.SetActive(false);
+        }
+
+        if (photonView.IsMine)
+        {
+            leaderboard.SubmitDeath();
+        }
+
+        gameManager.GameOver();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -65,27 +78,6 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
             currentHealth = (float)stream.ReceiveNext();
         }
     }
-
-    /*[PunRPC]
-    private void RPC_UpdateHealth(float health)
-    {
-        currentHealth = health;
-        healthBar.SetSlider(currentHealth);
-    }*/
-
-    // Adding Respawn for testing and optional feature
-
-   /* IEnumerator Respawn()
-    {
-        VisualiseRenderers(false);
-        currentHealth = maxHealth;
-        healthBar.SetSliderMax(maxHealth);
-        GetComponent<CharacterController>().enabled = false;
-        transform.position = new Vector3(0, 10, 0);
-        yield return new WaitForSeconds(1);
-        GetComponent<CharacterController>().enabled = true;
-        VisualiseRenderers(true);
-    }*/
 
     void VisualiseRenderers(bool state)
     {

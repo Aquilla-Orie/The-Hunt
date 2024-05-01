@@ -6,6 +6,7 @@ using StarterAssets;
 using UnityEngine.InputSystem;
 using System.Collections.Specialized;
 using Photon.Pun;
+using LootLocker.Requests;
 
 public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
 {
@@ -15,7 +16,6 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
     [SerializeField] private float normalSensitivity;
     [SerializeField] private float aimSensitivity;
     [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
-    //[SerializeField] private Transform debugTransform;
     [SerializeField] private Transform spawnBulletPosition;
     [SerializeField] private Animator animator;
 
@@ -23,19 +23,20 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
 
     private ThirdPersonController thirdPersonController;
     private StarterAssetsInputs starterAssetsInputs;
-    private Vector3 mouseWorldPosition;
+    private Leaderboard leaderboard;
 
     void Awake()
     {
         thirdPersonController = GetComponent<ThirdPersonController>();
         starterAssetsInputs = GetComponent<StarterAssetsInputs>();
+        leaderboard = FindObjectOfType<Leaderboard>(); 
     }
 
     void FixedUpdate()
     {
         if (photonView.IsMine)
         {
-            mouseWorldPosition = Vector3.zero;
+            Vector3 mouseWorldPosition = Vector3.zero;
 
             Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
             Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
@@ -43,25 +44,6 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
             if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
             {
                 mouseWorldPosition = raycastHit.point;
-                //debugTransform.position = raycastHit.point;
-
-                /*if (raycastHit.collider != null && raycastHit.collider.CompareTag("HealthPack"))
-                {
-                    if (Vector3.Distance(transform.position, raycastHit.point) <= 2f)
-                    {
-                        healthPackUI.SetActive(true);
-                        healthPackUI.transform.LookAt(healthPackUI.transform.position + Camera.main.transform.rotation * Vector3.forward,
-                            Camera.main.transform.rotation * Vector3.up);
-                    }
-                    else
-                    {
-                        healthPackUI.SetActive(false);
-                    }
-                }
-                else
-                {
-                    healthPackUI.SetActive(false);
-                }*/
             }
 
             if (starterAssetsInputs.aim)
@@ -107,11 +89,26 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
 
         if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
-            var enemyPlayerHealth = hit.collider.GetComponent<PlayerStats>();
+            var enemyPlayerStats = hit.collider.GetComponent<PlayerStats>();
 
-            if (enemyPlayerHealth != null)
+            if (enemyPlayerStats != null)
             {
-                enemyPlayerHealth.TakeDamage(10);
+                enemyPlayerStats.TakeDamage(10);
+
+                if (photonView.IsMine)
+                {
+                    leaderboard.SubmitDamage(10);
+                }
+
+                if (enemyPlayerStats.currentHealth <= 0)
+                {
+                    if (photonView.IsMine)
+                    {
+                        leaderboard.SubmitKill();
+                    }
+
+                    enemyPlayerStats.Die();
+                }
             }
         }
 

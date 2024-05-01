@@ -3259,6 +3259,7 @@ MonoBehaviour:
   aim: 0
   shoot: 0
   interact: 0
+  leaderboard: 0
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1
@@ -3451,6 +3452,7 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 100
   healthBar: {fileID: 2050171948}
+  gameManager: {fileID: 0}
 --- !u!114 &650301462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3574,12 +3576,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aimVirtualCamera: {fileID: 5534706271513550094}
   crosshairs: {fileID: 6863694577944623626}
+  healthPackUI: {fileID: 0}
   normalSensitivity: 1
   aimSensitivity: 0.5
   aimColliderLayerMask:
     serializedVersion: 2
     m_Bits: 1
-  debugTransform: {fileID: 2484345054138404990}
   spawnBulletPosition: {fileID: 1221494745}
   animator: {fileID: 1507583242147621782}
   muzzleFlash: {fileID: 3170975172003148301}
