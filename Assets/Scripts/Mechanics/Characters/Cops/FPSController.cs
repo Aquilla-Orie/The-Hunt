@@ -78,6 +78,7 @@ public class FPSController : MonoBehaviourPunCallbacks
             if (starterAssetsInputs.ping)
             {
                 photonView.RPC("RPC_Ping", RpcTarget.All);
+                starterAssetsInputs.ping = false;
             }
             
         }
