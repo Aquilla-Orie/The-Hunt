@@ -10,13 +10,17 @@ public class Item : Interactable
     public string Description { get; protected set; }
     public string Type { get; protected set; }
 
+    public Texture2D Image;
+
+    public ItemUI ItemUI;
+
     public override void Interact(InteractionManager interactor = null)
     {
         base.Interact();
         interactor.AddItemToInventory(this);
         transform.parent = interactor.transform;
         transform.position = Vector3.zero;
-        Debug.Log($"{Name} {Description} :: was interacted by {interactor.name}");
+        //Debug.Log($"{Name} {Description} :: was interacted by {interactor.name}");
     }
 
     public virtual void Use()
