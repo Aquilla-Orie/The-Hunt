@@ -3139,8 +3139,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 100
+  kills: 0
+  deaths: 0
+  damageDealt: 0
   healthBar: {fileID: 2050171948}
   gameManager: {fileID: 0}
+  leaderboard: {fileID: 0}
 --- !u!114 &650301462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3176,6 +3180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crosshairs: {fileID: 6781570471832908668}
+  pingMarker: {fileID: 3146550316924639441, guid: 69f5d0a7e49cbc149af386bcb860c5a5, type: 3}
   normalSensitivity: 1
   aimSensitivity: 0.5
   aimColliderLayerMask:

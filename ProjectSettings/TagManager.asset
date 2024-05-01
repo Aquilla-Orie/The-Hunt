@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CinemachineTarget
   - HealthPack
+  - PingMarker
   layers:
   - Default
   - TransparentFX
