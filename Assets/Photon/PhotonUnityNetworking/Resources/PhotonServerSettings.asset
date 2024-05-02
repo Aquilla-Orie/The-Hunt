@@ -43,6 +43,7 @@ MonoBehaviour:
   - RPC_Shoot
   - RPC_ApplyDamage
   - RPC_UpdateHealth
+  - RPC_Ping
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -15,7 +15,9 @@ namespace StarterAssets
         public bool sprint;
         public bool aim;
         public bool shoot;
-		public bool interact;
+        public bool interact;
+        public bool leaderboard;
+        public bool ping;
 
         [Header("Movement Settings")]
 		public bool analogMovement;
@@ -62,6 +64,16 @@ namespace StarterAssets
 		{
 			InteractInput(value.isPressed);
 		}
+
+		public void OnLeaderboard(InputValue value)
+		{
+			LeaderboardInput(value.isPressed);
+		}
+				
+		public void OnPing(InputValue value)
+		{
+			PingInput(value.isPressed);
+		}
 #endif
 
 
@@ -99,6 +111,16 @@ namespace StarterAssets
 		{
 			interact = newInteractState;
 		}
+
+        public void LeaderboardInput(bool newLeaderboardState)
+        {
+            leaderboard = newLeaderboardState;
+        }
+
+        public void PingInput(bool newPingState)
+        {
+            ping = newPingState;
+        }
 
         private void OnApplicationFocus(bool hasFocus)
 		{
