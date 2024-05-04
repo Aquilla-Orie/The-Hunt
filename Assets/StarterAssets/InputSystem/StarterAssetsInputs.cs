@@ -16,6 +16,7 @@ namespace StarterAssets
         public bool aim;
         public bool shoot;
 		public bool interact;
+		public Vector2 inventory;
 
         [Header("Movement Settings")]
 		public bool analogMovement;
@@ -62,6 +63,11 @@ namespace StarterAssets
 		{
 			InteractInput(value.isPressed);
 		}
+
+        public void OnInventory(InputValue value)
+        {
+            InventoryInput(value.Get<Vector2>());
+        }
 #endif
 
 
@@ -98,6 +104,11 @@ namespace StarterAssets
 		public void InteractInput(bool newInteractState)
 		{
 			interact = newInteractState;
+		}
+
+		public void InventoryInput(Vector2 newInventoryState)
+		{
+			inventory = newInventoryState;
 		}
 
         private void OnApplicationFocus(bool hasFocus)
