@@ -21,6 +21,8 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
 
     void Start()
     {
+        gameManager = FindObjectOfType<GameManagerScript>();
+        leaderboard = FindObjectOfType<Leaderboard>();
         visuals = GetComponentsInChildren<Renderer>();
 
         currentHealth = maxHealth;
@@ -62,9 +64,8 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
         if (photonView.IsMine)
         {
             leaderboard.SubmitDeath();
+            gameManager.GameOver();
         }
-
-        gameManager.GameOver();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -81,7 +82,7 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
 
     void VisualiseRenderers(bool state)
     {
-        foreach(var renderer in visuals)
+        foreach (var renderer in visuals)
         {
             renderer.enabled = state;
         }

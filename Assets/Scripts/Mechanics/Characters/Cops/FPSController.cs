@@ -14,6 +14,7 @@ public class FPSController : MonoBehaviourPunCallbacks
     [SerializeField] private float normalSensitivity;
     [SerializeField] private float aimSensitivity;
     [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
+    [SerializeField] private LayerMask pingLayerMask;
     //[SerializeField] private Transform debugTransform;
     [SerializeField] private Transform spawnBulletPosition;
     [SerializeField] private Animator animator;
@@ -26,6 +27,7 @@ public class FPSController : MonoBehaviourPunCallbacks
 
     void Awake()
     {
+        pingLayerMask = LayerMask.GetMask("Default", "PingMarker");
         thirdPersonController = GetComponent<ThirdPersonController>();
         starterAssetsInputs = GetComponent<StarterAssetsInputs>();
         leaderboard = FindObjectOfType<Leaderboard>();
@@ -62,7 +64,7 @@ public class FPSController : MonoBehaviourPunCallbacks
 
                 if (starterAssetsInputs.shoot)
                 {
-                    photonView.RPC("RPC_Shoot", RpcTarget.All); 
+                    photonView.RPC("RPC_Shoot", RpcTarget.All);
                 }
             }
             else
@@ -80,7 +82,6 @@ public class FPSController : MonoBehaviourPunCallbacks
                 photonView.RPC("RPC_Ping", RpcTarget.All);
                 starterAssetsInputs.ping = false;
             }
-            
         }
     }
 
@@ -92,7 +93,7 @@ public class FPSController : MonoBehaviourPunCallbacks
 
         if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
-            if (hit.collider.name == "PlayerAssassin")
+            if (hit.collider.tag == "Assassin")
             {
                 var enemyPlayerStats = hit.collider.GetComponent<PlayerStats>();
 
@@ -120,27 +121,24 @@ public class FPSController : MonoBehaviourPunCallbacks
 
         starterAssetsInputs.shoot = false;
     }
-
+        
     [PunRPC]
     void RPC_Ping()
     {
-        Vector3 mouseWorldPosition = Vector3.zero;
-
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
 
-        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, pingLayerMask))
         {
-            mouseWorldPosition = raycastHit.point;
-            //debugTransform.position = raycastHit.point;
-
-            if (raycastHit.collider.gameObject.tag == "PingMarker")
+            if (raycastHit.collider.gameObject.CompareTag("PingMarker"))
             {
-                Destroy(raycastHit.collider);
+                Destroy(raycastHit.collider.gameObject);
+            }
+            else
+            {
+                GameObject pingGO = Instantiate(pingMarker, raycastHit.point, Quaternion.identity);
+                Destroy(pingGO, 10f);
             }
         }
-
-        GameObject pingGO = Instantiate(pingMarker, mouseWorldPosition, Quaternion.identity);
-        Destroy(pingGO, 10f); 
     }
 }

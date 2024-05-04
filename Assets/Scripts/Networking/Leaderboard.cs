@@ -1,9 +1,90 @@
+/*using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using LootLocker.Requests;
+using TMPro;
+using Photon.Pun;
+
+public class Leaderboard : MonoBehaviourPunCallbacks
+{
+    string leaderboardKey = "globalKills";
+    public TextMeshProUGUI playerNames;
+    public TextMeshProUGUI playerScores;
+
+    void Start()
+    {
+
+    }
+
+    public IEnumerator SubmitScoreRoutine(int scoreToUpload)
+    {
+        bool done = false;
+        string playerID = PhotonNetwork.NickName;
+        LootLockerSDKManager.SubmitScore(playerID, scoreToUpload, leaderboardKey, (response) =>
+        {
+            if (response.success)
+            {
+                Debug.Log("Successfully uploaded score");
+                done = true;
+            }
+            else
+            {
+                Debug.Log("Failed" + response.errorData.message);
+                done = true;
+            }
+        });
+        yield return new WaitWhile(() => done == false);
+    }
+
+    public IEnumerator FetchTopHighscoresRoutine()
+    {
+        bool done = false;
+        LootLockerSDKManager.GetScoreList(leaderboardKey, 10, 0, (response) =>
+        {
+            if (response.success)
+            {
+                string tempPlayerNames = "Names\n";
+                string tempPlayerScores = "Scores\n";
+
+                LootLockerLeaderboardMember[] members = response.items;
+
+                for (int i = 0; i < members.Length; i++)
+                {
+                    tempPlayerNames += members[i].rank + ". ";
+                    if (members[i].player.name != "")
+                    {
+                        tempPlayerNames += members[i].player.name;
+                    }
+                    else
+                    {
+                        tempPlayerNames += members[i].player.id;
+                    }
+                    tempPlayerScores += members[i].kills + "\n";
+                    tempPlayerNames += "\n";
+                }
+                done = true;
+                playerNames.text = tempPlayerNames;
+                playerScores.text = tempPlayerScores;
+            }
+            else
+            {
+                Debug.Log("Failed" + response.errorData.message);
+                done = true;
+            }
+        });
+        yield return new WaitWhile(() => done == false);
+    }
+}
+*/
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using LootLocker.Requests;
 using TMPro;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class Leaderboard : MonoBehaviourPunCallbacks
 {
@@ -18,6 +99,8 @@ public class Leaderboard : MonoBehaviourPunCallbacks
     [SerializeField] private TextMeshProUGUI playerKillsText;
     [SerializeField] private TextMeshProUGUI playerDamageText;
     [SerializeField] private TextMeshProUGUI playerDeathsText;
+
+    private Dictionary<int, LootLockerLeaderboardMember> localLeaderboard = new Dictionary<int, LootLockerLeaderboardMember>();
 
     void Start()
     {
@@ -109,8 +192,7 @@ public class Leaderboard : MonoBehaviourPunCallbacks
         });
         yield return new WaitWhile(() => !done);
 
-        // Fetch leaderboard after submitting the score
-        yield return StartCoroutine(FetchLeaderboardRoutine());
+        FetchLeaderboardData();
     }
 
     private void UpdateLeaderboardData(LootLockerLeaderboardMember[] leaderboardMembers)
@@ -120,12 +202,19 @@ public class Leaderboard : MonoBehaviourPunCallbacks
         playerDamageText.text = "Damage\n";
         playerDeathsText.text = "Deaths\n";
 
+        localLeaderboard.Clear();
+
         foreach (var member in leaderboardMembers)
         {
             string playerName = string.IsNullOrEmpty(member.player.name) ? member.player.id.ToString() : member.player.name;
-            int playerKills = member.kills; // Update score to kills
-            int playerDamage = member.damage; // Update score to damage
-            int playerDeaths = member.deaths; // Update score to deaths
+            int playerKills = member.kills;
+            int playerDamage = member.damage;
+            int playerDeaths = member.deaths;
+
+            if (!localLeaderboard.ContainsKey(member.player.id))
+            {
+                localLeaderboard.Add(member.player.id, member);
+            }
 
             playerNamesText.text += playerName + "\n";
             playerKillsText.text += playerKills.ToString() + "\n";
@@ -135,6 +224,16 @@ public class Leaderboard : MonoBehaviourPunCallbacks
     }
 
     public override void OnJoinedRoom()
+    {
+        FetchLeaderboardData();
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        FetchLeaderboardData();
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         FetchLeaderboardData();
     }
