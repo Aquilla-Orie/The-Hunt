@@ -15,9 +15,8 @@ namespace StarterAssets
         public bool sprint;
         public bool aim;
         public bool shoot;
-        public bool interact;
-        public bool leaderboard;
-        public bool ping;
+		public bool interact;
+		public Vector2 inventory;
 
         [Header("Movement Settings")]
 		public bool analogMovement;
@@ -65,15 +64,10 @@ namespace StarterAssets
 			InteractInput(value.isPressed);
 		}
 
-		public void OnLeaderboard(InputValue value)
-		{
-			LeaderboardInput(value.isPressed);
-		}
-				
-		public void OnPing(InputValue value)
-		{
-			PingInput(value.isPressed);
-		}
+        public void OnInventory(InputValue value)
+        {
+            InventoryInput(value.Get<Vector2>());
+        }
 #endif
 
 
@@ -112,15 +106,10 @@ namespace StarterAssets
 			interact = newInteractState;
 		}
 
-        public void LeaderboardInput(bool newLeaderboardState)
-        {
-            leaderboard = newLeaderboardState;
-        }
-
-        public void PingInput(bool newPingState)
-        {
-            ping = newPingState;
-        }
+		public void InventoryInput(Vector2 newInventoryState)
+		{
+			inventory = newInventoryState;
+		}
 
         private void OnApplicationFocus(bool hasFocus)
 		{
