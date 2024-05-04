@@ -1,4 +1,5 @@
 using Newtonsoft.Json.Linq;
+using System;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 using UnityEngine.InputSystem;
@@ -17,6 +18,8 @@ namespace StarterAssets
         public bool shoot;
 		public bool interact;
 		public Vector2 inventory;
+        public bool leaderboard;
+		public bool ping;
 
         [Header("Movement Settings")]
 		public bool analogMovement;
@@ -68,8 +71,31 @@ namespace StarterAssets
         {
             InventoryInput(value.Get<Vector2>());
         }
+
+        public void OnLeaderboard(InputValue value)
+        {
+            LeaderboardInput(value.isPressed);
+        }
+
+        public void OnPing(InputValue value)
+        {
+            PingInput(value.isPressed);
+        }
+
+
+
+
 #endif
 
+        private void PingInput(bool newPingState)
+        {
+			ping = newPingState;
+        }
+
+        private void LeaderboardInput(bool newLeaderboardState)
+        {
+            leaderboard = newLeaderboardState;
+        }
 
         public void MoveInput(Vector2 newMoveDirection)
 		{

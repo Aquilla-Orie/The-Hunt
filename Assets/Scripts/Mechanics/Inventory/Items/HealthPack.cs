@@ -16,4 +16,17 @@ public class HealthPack : Item
         base.Use();
         Debug.Log("Using Health pack");
     }
+
+    public float restoreAmount = 20f;
+
+    public override void Interact(InteractionManager manager = null)
+    {
+        PlayerStats playerStats = FindObjectOfType<PlayerStats>();
+        if (playerStats != null && playerStats.transform.parent.name == "PlayerAssassin")
+        {
+            playerStats.RestoreHealth(restoreAmount);
+            Debug.Log("Player health restored by healthpack");
+            Destroy(gameObject);
+        }
+    }
 }
