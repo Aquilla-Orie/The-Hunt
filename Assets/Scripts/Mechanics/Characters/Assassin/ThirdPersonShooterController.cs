@@ -119,8 +119,8 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
                 {
                     //leaderboard.SubmitDamage(10);
 
-                    damage++;
-                    //leaderboard.SubmitScoreRoutine(globalDamageLeaderboardKey, damage);
+                    //damage++;
+                    //leaderboard.SubmitScoreRoutine(10);
                 }
 
                 if (enemyPlayerStats.currentHealth <= 0)
