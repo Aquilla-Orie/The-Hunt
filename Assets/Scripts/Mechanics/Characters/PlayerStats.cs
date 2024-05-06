@@ -64,7 +64,7 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
         if (photonView.IsMine)
         {
             leaderboard.SubmitDeath();
-            gameManager.GameOver();
+            gameManager.PlayerDead(gameObject.tag);
         }
     }
 
