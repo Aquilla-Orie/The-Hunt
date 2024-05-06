@@ -5,6 +5,7 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine.UI;
 using System.Linq;
+using System;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -16,6 +17,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private bool _isAssassin = false;
     private ExitGames.Client.Photon.Hashtable _customRoomProperties = new ExitGames.Client.Photon.Hashtable();
 
+    private int _maxCops = 2;
+    private int _maxAssassin = 1;
+    private int _copCount;
+    private int _assassinCount;
+
     [SerializeField] private GameObject _playerAssassin;
     [SerializeField] private GameObject _playerCop;
 
@@ -24,10 +30,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject _roomDetailsPanel;
     [SerializeField] private TMP_InputField _roomNameInput;
 
+    [SerializeField] private List<Transform> _spawnLocations = new List<Transform>();
+
     private Player _player;
+
+    [SerializeField] private GameObject _door;
 
     private void Start()
     {
+        _copCount = 0;
+        _assassinCount = 0;
         PhotonNetwork.AutomaticallySyncScene = true;
         if (!PhotonNetwork.IsConnected)
         {
@@ -91,6 +103,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             roomOptions.IsOpen = true;
             roomOptions.IsVisible = true;
             roomOptions.MaxPlayers = (byte)5;
+            roomOptions.BroadcastPropsChangeToAll = true;
             //roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "HasAssassin", true} };
 
             Debug.Log($"Joining Room {_roomName}");
@@ -124,6 +137,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             int roomCount = _createdRooms[i].PlayerCount;
             int roomMax = _createdRooms[i].MaxPlayers;
             int roomID = _createdRooms[i].masterClientId;
+            //bool roomHasAssassin = (bool)_createdRooms[i].CustomProperties["isAssassin"];
 
             //Set the room name
             panel.transform.GetChild(0).GetComponent<TMP_Text>().text = roomName;
@@ -137,12 +151,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
             //Set Join as Cop
             Button jCopButton = panel.transform.GetChild(2).GetComponent<Button>();
-            jCopButton.onClick.AddListener(() => { JoinRoomCop(jCopButton);
+            jCopButton.onClick.AddListener(() => {
+                JoinRoomCop(jCopButton);
             });
             //Set Join as Assassin
             Button jAssButton = panel.transform.GetChild(3).GetComponent<Button>();
-            jAssButton.onClick.AddListener(() => { JoinRoomAssassin(jAssButton);
+            jAssButton.onClick.AddListener(() => {
+                JoinRoomAssassin(jAssButton);
             });
+
+            //if (roomHasAssassin)
+            //{
+            //    //Debug.Log($"Room {roomName} has assassin");
+            //    //jAssButton.interactable = false;
+            //}
             panel.transform.GetChild(4).GetComponent<TMP_Text>().text = $"{roomID}";
         }
     }
@@ -187,6 +209,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 _roomNameInput.text = "";
                 //return;
             }
+
         }
         _joiningRoom = true;
         _isAssassin = true;
@@ -203,7 +226,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Debug.Log("===Connected to Room");
         print(PhotonNetwork.CurrentRoom.Players.Count);
 
-        _networkUICanvas.SetActive(false);
 
         Player player = PhotonNetwork.CurrentRoom.Players.Last().Value;
         Debug.Log($"Nick {player.NickName}:::Play {_playerName} just joined the lobby");
@@ -211,12 +233,39 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         if (_isAssassin)
         {
+            _assassinCount = GetAssassinCount();
+            PhotonNetwork.CurrentRoom.SetCustomProperties(_customRoomProperties);
+            if (_assassinCount >= _maxAssassin) return;
             PhotonNetwork.Instantiate(_playerAssassin.name, new Vector2(4, 1.5f), Quaternion.identity, 0);
         }
         else
         {
-            PhotonNetwork.Instantiate(_playerCop.name, new Vector2(-4f, 1.5f), Quaternion.identity, 0);
+            _assassinCount = (bool)PhotonNetwork.CurrentRoom.CustomProperties["isAssassin"] ? 1 : 0;
+            _copCount = PhotonNetwork.CurrentRoom.Players.Count - _assassinCount;
+                //GameObject.FindGameObjectsWithTag("Cop").Length;
+            print($"Ass {_assassinCount} Before instantiation");
+            print($"Cop {_copCount} Before instantiation");
+            if (_copCount > _maxCops)
+                return;
+
+            Transform sl;
+            if (_spawnLocations.Count > 0)
+            {
+                sl = _spawnLocations[0];
+                _spawnLocations.RemoveAt(0);
+                PhotonNetwork.Instantiate(_playerCop.name, sl.position, Quaternion.identity, 0);
+            }
+            else
+                PhotonNetwork.Instantiate(_playerCop.name, new Vector2(2f, 26f), Quaternion.identity, 0);
+
+            //_copCount++;
+            if (_copCount >= _maxCops)
+            {
+                //Start game
+                _door.SetActive(false);
+            }
         }
+        _networkUICanvas.SetActive(false);
     }
 
     public void PlayAsCop()
@@ -231,5 +280,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         _isAssassin = true;
         _customRoomProperties["isAssassin"] = _isAssassin;
         PhotonNetwork.LocalPlayer.CustomProperties = _customRoomProperties;
+    }
+
+    private int GetAssassinCount()
+    {
+        return GameObject.FindGameObjectsWithTag("Assassin").Length;
     }
 }

@@ -69,9 +69,18 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Inventory",
+                    "type": "Value",
+                    "id": "43ce32c8-d19e-4e0d-a81c-81724682af0f",
+                    "expectedControlType": "Dpad",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Leaderboard",
                     "type": "Button",
-                    "id": "ce45ccc1-4b0e-41bb-91b8-58e7c6436402",
+                    "id": "cc96fafe-7ba2-429c-8bf9-d57f7e3c5499",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -80,7 +89,7 @@
                 {
                     "name": "Ping",
                     "type": "Button",
-                    "id": "8f0fe8c9-47b2-49f0-9254-d7704a3b3a5e",
+                    "id": "f7dba511-2db4-4e93-b1e0-6e55c868763b",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -332,7 +341,29 @@
                 },
                 {
                     "name": "",
-                    "id": "ba8c86b7-51c9-43cc-890b-2ac0fb05acc1",
+                    "id": "29fe1a82-58e6-46fb-b938-1ecffda55900",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "af8b4212-63ff-4613-bdd5-16e8b07d1c3f",
+                    "path": "<Gamepad>/dpad",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a2c7cc74-d935-4e07-bcc6-e2e2b4bb6ca1",
                     "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
@@ -343,7 +374,7 @@
                 },
                 {
                     "name": "",
-                    "id": "30a81b1b-1f6a-4635-a4fb-6145b8747c99",
+                    "id": "fb11e9f4-9350-4a08-a6de-a2d4b7b77fcf",
                     "path": "<Gamepad>/select",
                     "interactions": "",
                     "processors": "",
@@ -354,22 +385,22 @@
                 },
                 {
                     "name": "",
-                    "id": "bb124b29-2f2f-4350-9fdc-2065b41218d4",
-                    "path": "<Gamepad>/dpad/up",
+                    "id": "811e2cce-ee59-4c65-a5a8-ef2e0b2fcf8d",
+                    "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "KeyboardMouse",
                     "action": "Ping",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "9e85a0bb-867f-4982-99a1-d559af13058f",
-                    "path": "<Mouse>/middleButton",
+                    "id": "17dca8cd-34c5-4add-8316-bf2527270e49",
+                    "path": "<Gamepad>/dpad/down",
                     "interactions": "",
                     "processors": "",
-                    "groups": "KeyboardMouse",
+                    "groups": "Gamepad",
                     "action": "Ping",
                     "isComposite": false,
                     "isPartOfComposite": false

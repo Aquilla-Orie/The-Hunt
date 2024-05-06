@@ -8,6 +8,7 @@ TagManager:
   - HealthPack
   - PingMarker
   - Assassin
+  - Cop
   layers:
   - Default
   - TransparentFX

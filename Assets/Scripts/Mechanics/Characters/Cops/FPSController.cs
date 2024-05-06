@@ -25,6 +25,9 @@ public class FPSController : MonoBehaviourPunCallbacks
     private StarterAssetsInputs starterAssetsInputs;
     private Leaderboard leaderboard;
 
+    private int kills = 0;
+    private int damage = 0;
+
     void Awake()
     {
         pingLayerMask = LayerMask.GetMask("Default", "PingMarker");
@@ -103,14 +106,20 @@ public class FPSController : MonoBehaviourPunCallbacks
 
                     if (photonView.IsMine)
                     {
-                        leaderboard.SubmitDamage(10);
+                        //leaderboard.SubmitDamage(10);
+
+                        damage++;
+                        //leaderboard.SubmitScoreRoutine(globalDamageLeaderboardKey, damage);
                     }
 
                     if (enemyPlayerStats.currentHealth <= 0)
                     {
                         if (photonView.IsMine)
                         {
-                            leaderboard.SubmitKill();
+                            //leaderboard.SubmitKill();
+
+                            kills++;
+                            leaderboard.SubmitScoreRoutine(kills);
                         }
 
                         enemyPlayerStats.Die();
