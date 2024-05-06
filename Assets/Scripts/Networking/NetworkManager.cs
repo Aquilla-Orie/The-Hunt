@@ -104,7 +104,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             roomOptions.IsVisible = true;
             roomOptions.MaxPlayers = (byte)5;
             roomOptions.BroadcastPropsChangeToAll = true;
-            //roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "HasAssassin", true} };
+            roomOptions.CustomRoomProperties = _customRoomProperties;
+            string[] customPropertiesForLobby = new String[1]
+            {
+                "isAssassin"
+            };
+            roomOptions.CustomRoomPropertiesForLobby = customPropertiesForLobby;
 
             Debug.Log($"Joining Room {_roomName}");
             PhotonNetwork.JoinOrCreateRoom(_roomName, roomOptions, TypedLobby.Default);
@@ -137,7 +142,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             int roomCount = _createdRooms[i].PlayerCount;
             int roomMax = _createdRooms[i].MaxPlayers;
             int roomID = _createdRooms[i].masterClientId;
-            //bool roomHasAssassin = (bool)_createdRooms[i].CustomProperties["isAssassin"];
+            bool roomHasAssassin = (bool)_createdRooms[i].CustomProperties["isAssassin"];
 
             //Set the room name
             panel.transform.GetChild(0).GetComponent<TMP_Text>().text = roomName;
@@ -160,11 +165,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 JoinRoomAssassin(jAssButton);
             });
 
-            //if (roomHasAssassin)
-            //{
-            //    //Debug.Log($"Room {roomName} has assassin");
-            //    //jAssButton.interactable = false;
-            //}
+            if (roomHasAssassin)
+            {
+                Debug.Log($"Room {roomName} has assassin");
+                jAssButton.interactable = false;
+            }
             panel.transform.GetChild(4).GetComponent<TMP_Text>().text = $"{roomID}";
         }
     }
