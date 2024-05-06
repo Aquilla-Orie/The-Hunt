@@ -152,10 +152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832aad9f60774d4787c32168f315659, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerNamesText: {fileID: 0}
-  playerKillsText: {fileID: 0}
-  playerDamageText: {fileID: 0}
-  playerDeathsText: {fileID: 0}
+  playerNamesText: {fileID: 1488083595}
+  playerKillsText: {fileID: 759222160}
+  playerDamageText: {fileID: 2014626293}
+  playerDeathsText: {fileID: 595898343}
 --- !u!4 &87172486
 Transform:
   m_ObjectHideFlags: 0

@@ -9,9 +9,7 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
     public float maxHealth = 100f;
     public float currentHealth;
 
-    public int kills;
-    public int deaths;
-    public int damageDealt;
+    private int deaths = 0;
 
     Renderer[] visuals;
 
@@ -63,7 +61,10 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
 
         if (photonView.IsMine)
         {
-            leaderboard.SubmitDeath();
+            //leaderboard.SubmitDeath();
+            deaths++;
+            //leaderboard.SubmitScoreRoutine(globalDeathsLeaderboardKey, deaths);
+
             gameManager.PlayerDead(gameObject.tag);
         }
     }
