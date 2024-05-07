@@ -6,9 +6,9 @@ using UnityEngine;
 public class Item : Interactable
 {
     //An item is any object the player can hold physically
-    public string Name { get; protected set; }
-    public string Description { get; protected set; }
-    public string Type { get; protected set; }
+    public string Name;
+    public string Description;
+    public string Type;
 
     public Texture2D Image;
 
@@ -23,7 +23,7 @@ public class Item : Interactable
         //Debug.Log($"{Name} {Description} :: was interacted by {interactor.name}");
     }
 
-    public virtual void Use()
+    public virtual void Use(InteractionManager interactor = null)
     {
 
     }

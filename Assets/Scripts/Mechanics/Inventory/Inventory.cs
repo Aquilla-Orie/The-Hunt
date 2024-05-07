@@ -12,28 +12,58 @@ public class Inventory : MonoBehaviour
     public Item EquippedItem {  get; private set; }
 
     [SerializeField] private InventoryUI _inventoryUI;
+    [SerializeField] private InteractionManager _interactionManager;
+
+    [SerializeField] private List<Item> _items;
 
     private int _inventoryIndex;
+
+    private void Start()
+    {
+        _interactionManager = GetComponent<InteractionManager>();
+        InitializeInventory();
+    }
+
     public void InitializeInventory()
     {
         //Primes up the inventory for use
         _inventoryIndex = 0;
+        SelectItem(_inventoryIndex);
+
+        if (_items.Count > 0)
+        {
+            foreach (Item item in _items)
+            {
+                AddItem(item);
+            }
+        }
     }
 
     private void Update()
     {
-        Vector2 inventorySelect = _starterAssetsInputs.inventory;
-        if (inventorySelect.x > 0)
+        if (_starterAssetsInputs.inventoryRight)
         {
             _inventoryIndex++;
             SelectItem(_inventoryIndex);
+            
         }
-        if (inventorySelect.x < 0)
+        if (_starterAssetsInputs.inventoryLeft)
         {
             _inventoryIndex--;
             SelectItem(_inventoryIndex);
         }
-        
+
+        if (_starterAssetsInputs.inventoryUse)
+        {
+            if (EquippedItem != null)
+            {
+                UseItem(EquippedItem);
+            }
+        }
+
+        _starterAssetsInputs.inventoryLeft = false;
+        _starterAssetsInputs.inventoryRight = false;
+        _starterAssetsInputs.inventoryUse = false;
     }
 
     public void AddItem(Item item)
@@ -55,18 +85,24 @@ public class Inventory : MonoBehaviour
 
     }
 
-    //public void RemoveItem(Item item)
-    //{
-    //    if (InventoryItems.ContainsKey(item))
-    //    {
-    //        if (InventoryItems[item] > 0)
-    //        {
-    //            InventoryItems[item] = InventoryItems[item]--;
-    //            _inventoryUI.RemoveItemFromUI(item);
-    //            return;
-    //        }
-    //    }
-    //}
+    public void RemoveItem(Item item)
+    {
+        string name = item.Name;
+        int count = 0;
+
+        if (InventoryItems.ContainsKey(name))
+        {
+            count = InventoryItems[name].Value;
+
+            if (count > 0)
+            {
+                count--; 
+                InventoryItems[name] = new KeyValuePair<Item, int>(item, count);
+                _inventoryUI.RemoveItemFromUI(item);
+                return;
+            }
+        }
+    }
 
     public void SelectItem(int index)
     {
@@ -76,5 +112,23 @@ public class Inventory : MonoBehaviour
         Debug.Log($"Index after clamp {index}");
         EquippedItem = InventoryItems.Values.ToList()[index].Key;
         Debug.Log($"Equipped item is {EquippedItem.Name}");
+    }
+
+    public void UseItem(Item item)
+    {
+        string name = item.Name;
+        int count = 0;
+
+        if (InventoryItems.ContainsKey(name))
+        {
+            count = InventoryItems[name].Value;
+
+            if (count > 0)
+            {
+                item.Use(_interactionManager);
+                RemoveItem(item);
+                return;
+            }
+        }
     }
 }

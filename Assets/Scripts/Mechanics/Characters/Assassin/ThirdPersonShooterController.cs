@@ -136,4 +136,30 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
 
         starterAssetsInputs.shoot = false;
     }
+
+    [PunRPC]
+    void RPC_PlaceItem(string name)
+    {
+        Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f))
+        {
+            //if (raycastHit.collider.gameObject.CompareTag("PingMarker"))
+            //{
+            //    Destroy(raycastHit.collider.gameObject);
+            //}
+            //else
+            //{
+            //    GameObject pingGO = Instantiate(pingMarker, raycastHit.point, Quaternion.identity);
+            //    Destroy(pingGO, 10f);
+            //}
+            GameObject pingGO = PhotonNetwork.Instantiate(name, raycastHit.point, Quaternion.identity);
+        }
+    }
+
+    public void PlaceItem(string name)
+    {
+        photonView.RPC("RPC_PlaceItem", RpcTarget.All, name);
+    }
 }

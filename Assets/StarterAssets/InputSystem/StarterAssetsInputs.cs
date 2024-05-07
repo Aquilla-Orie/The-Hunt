@@ -17,7 +17,9 @@ namespace StarterAssets
         public bool aim;
         public bool shoot;
 		public bool interact;
-		public Vector2 inventory;
+		public bool inventoryLeft;
+		public bool inventoryRight;
+		public bool inventoryUse;
         public bool leaderboard;
 		public bool ping;
 
@@ -67,9 +69,19 @@ namespace StarterAssets
 			InteractInput(value.isPressed);
 		}
 
-        public void OnInventory(InputValue value)
+        public void OnInventoryLeft(InputValue value)
         {
-            InventoryInput(value.Get<Vector2>());
+            InventoryLeftInput(value.isPressed);
+        }
+
+		public void OnInventoryRight(InputValue value)
+        {
+            InventoryRightInput(value.isPressed);
+        }
+
+		public void OnInventoryUse(InputValue value)
+        {
+            InventoryUseInput(value.isPressed);
         }
 
         public void OnLeaderboard(InputValue value)
@@ -132,9 +144,18 @@ namespace StarterAssets
 			interact = newInteractState;
 		}
 
-		public void InventoryInput(Vector2 newInventoryState)
+		public void InventoryLeftInput(bool newInventoryState)
 		{
-			inventory = newInventoryState;
+			inventoryLeft = newInventoryState;
+		}
+		public void InventoryRightInput(bool newInventoryState)
+		{
+			inventoryRight = newInventoryState;
+		}
+
+		public void InventoryUseInput(bool newInventoryState)
+		{
+			inventoryUse = newInventoryState;
 		}
 
         private void OnApplicationFocus(bool hasFocus)
