@@ -238,9 +238,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         if (_isAssassin)
         {
-            _assassinCount = GetAssassinCount();
-            PhotonNetwork.CurrentRoom.SetCustomProperties(_customRoomProperties);
-            if (_assassinCount >= _maxAssassin) return;
+            //_assassinCount = GetAssassinCount();
+            //PhotonNetwork.CurrentRoom.SetCustomProperties(_customRoomProperties);
+            //if (_assassinCount >= _maxAssassin) return;
             PhotonNetwork.Instantiate(_playerAssassin.name, new Vector2(4, 1.5f), Quaternion.identity, 0);
         }
         else
@@ -285,10 +285,5 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         _isAssassin = true;
         _customRoomProperties["isAssassin"] = _isAssassin;
         PhotonNetwork.LocalPlayer.CustomProperties = _customRoomProperties;
-    }
-
-    private int GetAssassinCount()
-    {
-        return GameObject.FindGameObjectsWithTag("Assassin").Length;
     }
 }
