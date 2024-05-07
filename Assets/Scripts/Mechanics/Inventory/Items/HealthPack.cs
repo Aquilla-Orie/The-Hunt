@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HealthPack : Item
 {
+    public float restoreAmount = 20f;
     private void Start()
     {
         Name = "Health Pack";
@@ -11,22 +12,17 @@ public class HealthPack : Item
         Type = $"Healing";
     }
 
-    public override void Use()
+    public override void Use(InteractionManager interactor = null)
     {
         base.Use();
         Debug.Log("Using Health pack");
-    }
-
-    public float restoreAmount = 20f;
-
-    public override void Interact(InteractionManager manager = null)
-    {
-        PlayerStats playerStats = FindObjectOfType<PlayerStats>();
-        if (playerStats != null && playerStats.transform.parent.name == "PlayerAssassin")
+        PlayerStats playerStats = interactor.GetComponent<PlayerStats>();
+        if (playerStats != null)
         {
             playerStats.RestoreHealth(restoreAmount);
             Debug.Log("Player health restored by healthpack");
             Destroy(gameObject);
         }
     }
+
 }

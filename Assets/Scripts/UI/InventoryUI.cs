@@ -32,12 +32,18 @@ public class InventoryUI : MonoBehaviour
         //Set item properties
     }
 
-    //public void RemoveItemFromUI(Item item)
-    //{
-    //    if (_inventoryUIItems.ContainsKey(item))
-    //    {
-    //        //Only update count
-    //        return;
-    //    }
-    //}
+    public void RemoveItemFromUI(Item item)
+    {
+        string name = item.Name;
+        int count = _inventoryUIItems[name].Value;
+
+        if (_inventoryUIItems.ContainsKey(name))
+        {
+            //Only update count
+            count--;
+            _inventoryUIItems[name] = new KeyValuePair<Item, int>(item, count);
+            item.ItemUI.UpdateItemCount(_inventoryUIItems[name].Value);
+            return;
+        }
+    }
 }

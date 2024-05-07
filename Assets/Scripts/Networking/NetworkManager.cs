@@ -31,6 +31,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_InputField _roomNameInput;
 
     [SerializeField] private List<Transform> _spawnLocations = new List<Transform>();
+    [SerializeField] private Transform _assassinSpawnLocation;
 
     private Player _player;
 
@@ -241,7 +242,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             //_assassinCount = GetAssassinCount();
             //PhotonNetwork.CurrentRoom.SetCustomProperties(_customRoomProperties);
             //if (_assassinCount >= _maxAssassin) return;
-            PhotonNetwork.Instantiate(_playerAssassin.name, new Vector2(4, 1.5f), Quaternion.identity, 0);
+            PhotonNetwork.Instantiate(_playerAssassin.name, _assassinSpawnLocation.position, Quaternion.identity, 0);
         }
         else
         {

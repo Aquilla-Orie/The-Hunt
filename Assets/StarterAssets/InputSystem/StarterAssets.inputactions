@@ -69,13 +69,31 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Inventory",
-                    "type": "Value",
+                    "name": "InventoryLeft",
+                    "type": "Button",
                     "id": "43ce32c8-d19e-4e0d-a81c-81724682af0f",
-                    "expectedControlType": "Dpad",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "InventoryRight",
+                    "type": "Button",
+                    "id": "7f6de94a-f95e-4270-b193-5a4987955d17",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "InventoryUse",
+                    "type": "Button",
+                    "id": "c230abd4-fb1f-43db-9a7f-6e4237c94b1f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Leaderboard",
@@ -342,22 +360,22 @@
                 {
                     "name": "",
                     "id": "29fe1a82-58e6-46fb-b938-1ecffda55900",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
-                    "action": "Inventory",
+                    "action": "InventoryLeft",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "af8b4212-63ff-4613-bdd5-16e8b07d1c3f",
-                    "path": "<Gamepad>/dpad",
+                    "path": "<Gamepad>/dpad/left",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Inventory",
+                    "action": "InventoryLeft",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -402,6 +420,50 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Ping",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7baf83d6-4981-42a8-94d9-24c9e77a959b",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "InventoryRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b0c1f6c2-ae1b-4f47-86cc-e297d0edc7aa",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "InventoryRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d9bcc962-2516-494b-8c5c-4c9bb72a81af",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "InventoryUse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a50e23c4-af4f-44e7-86ad-16a64821796f",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "InventoryUse",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
