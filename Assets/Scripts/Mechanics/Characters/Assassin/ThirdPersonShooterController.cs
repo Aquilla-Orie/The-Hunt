@@ -18,14 +18,16 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
     [SerializeField] private Transform spawnBulletPosition;
     [SerializeField] private Animator animator;
 
+    private string globalKillsLeaderboardKey = "globalKills";
+    private string globalDamageLeaderboardKey = "globalDamage";
+
     public ParticleSystem muzzleFlash;
 
     private ThirdPersonController thirdPersonController;
     private StarterAssetsInputs starterAssetsInputs;
     private Leaderboard leaderboard;
 
-    private int kills = 0;
-    private int damage = 0;
+    int score = 0;
 
     void Awake()
     {
@@ -117,19 +119,14 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
 
                 if (photonView.IsMine)
                 {
-                    //leaderboard.SubmitDamage(10);
-
-                    //damage++;
-                    //leaderboard.SubmitScoreRoutine(10);
+                    leaderboard.SubmitScore(++score, globalDamageLeaderboardKey);
                 }
 
                 if (enemyPlayerStats.currentHealth <= 0)
                 {
                     if (photonView.IsMine)
                     {
-                        //leaderboard.SubmitKill();
-                        kills++;
-                        leaderboard.SubmitScoreRoutine(kills);
+                        leaderboard.SubmitScore(++score, globalKillsLeaderboardKey);
                     }
 
                     enemyPlayerStats.Die();

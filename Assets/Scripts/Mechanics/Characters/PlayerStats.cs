@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using LootLocker.Requests;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
 {
     public float maxHealth = 100f;
     public float currentHealth;
 
-    private int deaths = 0;
+    int score = 0;
+
+    private string globalDeathsLeaderboardKey = "globalDeaths";
 
     Renderer[] visuals;
 
@@ -61,9 +64,7 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
 
         if (photonView.IsMine)
         {
-            //leaderboard.SubmitDeath();
-            deaths++;
-            //leaderboard.SubmitScoreRoutine(globalDeathsLeaderboardKey, deaths);
+            leaderboard.SubmitScore(++score, globalDeathsLeaderboardKey);
 
             gameManager.PlayerDead(gameObject.tag);
         }

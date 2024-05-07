@@ -19,14 +19,16 @@ public class FPSController : MonoBehaviourPunCallbacks
     [SerializeField] private Transform spawnBulletPosition;
     [SerializeField] private Animator animator;
 
+    private string globalKillsLeaderboardKey = "globalKills";
+    private string globalDamageLeaderboardKey = "globalDamage";
+
     public ParticleSystem muzzleFlash;
 
     private ThirdPersonController thirdPersonController;
     private StarterAssetsInputs starterAssetsInputs;
     private Leaderboard leaderboard;
 
-    private int kills = 0;
-    private int damage = 0;
+    int score = 0;
 
     void Awake()
     {
@@ -67,7 +69,7 @@ public class FPSController : MonoBehaviourPunCallbacks
 
                 if (starterAssetsInputs.shoot)
                 {
-                    photonView.RPC("RPC_Shoot", RpcTarget.All);
+                    photonView.RPC("RPC_Shoot", RpcTarget.All, mouseWorldPosition);
                 }
             }
             else
@@ -89,14 +91,15 @@ public class FPSController : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    void RPC_Shoot()
+    void RPC_Shoot(Vector3 mousePosition)
     {
         muzzleFlash.Play();
-        Ray ray = new Ray(spawnBulletPosition.position, spawnBulletPosition.forward);
+        Vector3 aimDirection = (mousePosition - spawnBulletPosition.position).normalized;
+        Ray ray = new Ray(spawnBulletPosition.position, aimDirection);
 
         if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
-            if (hit.collider.tag == "Assassin")
+            if (hit.collider.CompareTag("Assassin"))
             {
                 var enemyPlayerStats = hit.collider.GetComponent<PlayerStats>();
 
@@ -106,31 +109,27 @@ public class FPSController : MonoBehaviourPunCallbacks
 
                     if (photonView.IsMine)
                     {
-                        //leaderboard.SubmitDamage(10);
-
-                        damage++;
-                        //leaderboard.SubmitScoreRoutine(globalDamageLeaderboardKey, damage);
+                        leaderboard.SubmitScore(++score, globalDamageLeaderboardKey);
                     }
 
                     if (enemyPlayerStats.currentHealth <= 0)
                     {
                         if (photonView.IsMine)
                         {
-                            //leaderboard.SubmitKill();
-
-                            kills++;
-                            leaderboard.SubmitScoreRoutine(kills);
+                            leaderboard.SubmitScore(++score, globalKillsLeaderboardKey);
                         }
 
                         enemyPlayerStats.Die();
                     }
                 }
             }
+           
         }
 
         starterAssetsInputs.shoot = false;
     }
-        
+
+
     [PunRPC]
     void RPC_Ping()
     {
