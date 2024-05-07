@@ -96,6 +96,7 @@ public class FPSController : MonoBehaviourPunCallbacks
 
         if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
+            Debug.Log($"Hitting {hit.collider.tag} with name {hit.collider.name}");
             if (hit.collider.tag == "Assassin")
             {
                 var enemyPlayerStats = hit.collider.GetComponent<PlayerStats>();
@@ -141,11 +142,11 @@ public class FPSController : MonoBehaviourPunCallbacks
         {
             if (raycastHit.collider.gameObject.CompareTag("PingMarker"))
             {
-                Destroy(raycastHit.collider.gameObject);
+                PhotonNetwork.Destroy(raycastHit.collider.gameObject);
             }
             else
             {
-                GameObject pingGO = Instantiate(pingMarker, raycastHit.point, Quaternion.identity);
+                GameObject pingGO = PhotonNetwork.Instantiate("PingMarker", raycastHit.point, Quaternion.identity);
                 Destroy(pingGO, 10f);
             }
         }

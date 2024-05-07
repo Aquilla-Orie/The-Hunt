@@ -9340,9 +9340,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 100
-  kills: 0
-  deaths: 0
-  damageDealt: 0
   healthBar: {fileID: 2050171948}
   gameManager: {fileID: 0}
   leaderboard: {fileID: 0}
@@ -9390,9 +9387,9 @@ MonoBehaviour:
   pingLayerMask:
     serializedVersion: 2
     m_Bits: 0
-  spawnBulletPosition: {fileID: 0}
+  spawnBulletPosition: {fileID: 8832802844026669809}
   animator: {fileID: 1507583242147621782}
-  muzzleFlash: {fileID: 0}
+  muzzleFlash: {fileID: 3352240987020558431}
 --- !u!114 &650301463
 MonoBehaviour:
   m_ObjectHideFlags: 0
