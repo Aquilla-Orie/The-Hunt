@@ -17,6 +17,8 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
     [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
     [SerializeField] private Transform spawnBulletPosition;
     [SerializeField] private Animator animator;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip gunClip;
 
     private string globalKillsLeaderboardKey = "globalKills";
     private string globalDamageLeaderboardKey = "globalDamage";
@@ -48,24 +50,6 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
             if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
             {
                 mouseWorldPosition = raycastHit.point;
-
-                /*if (raycastHit.collider != null && raycastHit.collider.CompareTag("HealthPack"))
-                {
-                    if (Vector3.Distance(transform.position, raycastHit.point) <= 2f)
-                    {
-                        healthPackUI.SetActive(true);
-                        healthPackUI.transform.LookAt(healthPackUI.transform.position + Camera.main.transform.rotation * Vector3.forward,
-                            Camera.main.transform.rotation * Vector3.up);
-                    }
-                    else
-                    {
-                        healthPackUI.SetActive(false);
-                    }
-                }
-                else
-                {
-                    healthPackUI.SetActive(false);
-                }*/
             }
 
             if (starterAssetsInputs.aim)
@@ -106,6 +90,8 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
     void RPC_Shoot(Vector3 mousePosition)
     {
         muzzleFlash.Play();
+        audioSource.PlayOneShot(gunClip);
+
         Vector3 aimDirection = (mousePosition - spawnBulletPosition.position).normalized;
         Ray ray = new Ray(spawnBulletPosition.position, aimDirection);
 

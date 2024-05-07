@@ -18,6 +18,10 @@ public class FPSController : MonoBehaviourPunCallbacks
     //[SerializeField] private Transform debugTransform;
     [SerializeField] private Transform spawnBulletPosition;
     [SerializeField] private Animator animator;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip gunClip;
+    [SerializeField] private AudioClip pingClip;
+
 
     private string globalKillsLeaderboardKey = "globalKills";
     private string globalDamageLeaderboardKey = "globalDamage";
@@ -94,6 +98,8 @@ public class FPSController : MonoBehaviourPunCallbacks
     void RPC_Shoot(Vector3 mousePosition)
     {
         muzzleFlash.Play();
+        //audioManager.PlayGunShot();
+        audioSource.PlayOneShot(gunClip);
         Vector3 aimDirection = (mousePosition - spawnBulletPosition.position).normalized;
         Ray ray = new Ray(spawnBulletPosition.position, aimDirection);
 
@@ -133,6 +139,8 @@ public class FPSController : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_Ping()
     {
+        //audioManager.PlayPingAudio();
+        audioSource.PlayOneShot(pingClip);
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
 
