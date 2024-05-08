@@ -1324,11 +1324,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   matchStartAudioSource: {fileID: 0}
-  matchStartClip: {fileID: 0}
+  matchStartClip: {fileID: 8300000, guid: 7990e52431df3dc47b614acbf4d80348, type: 3}
   gunAudioSource: {fileID: 0}
-  gunShotClip: {fileID: 0}
+  gunShotClip: {fileID: 8300000, guid: 0ff3701aea7818b4ea502331b4fbc18f, type: 3}
   pingAudioSource: {fileID: 0}
-  pingClip: {fileID: 0}
+  pingClip: {fileID: 8300000, guid: 056e64f34df16534a89b11cdc93f239e, type: 3}
   audioSource: {fileID: 0}
 --- !u!1 &1667095740883463517
 GameObject:
@@ -7267,7 +7267,7 @@ MonoBehaviour:
   gunAudioSource: {fileID: 0}
   gunShotClip: {fileID: 8300000, guid: 0ff3701aea7818b4ea502331b4fbc18f, type: 3}
   pingAudioSource: {fileID: 0}
-  pingClip: {fileID: 8300000, guid: ff3b9202f7ada4d429ee2bfa9a3ae811, type: 3}
+  pingClip: {fileID: 8300000, guid: 056e64f34df16534a89b11cdc93f239e, type: 3}
   audioSource: {fileID: 0}
 --- !u!1 &3221467002339218806
 GameObject:

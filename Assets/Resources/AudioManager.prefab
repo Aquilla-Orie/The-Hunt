@@ -48,5 +48,5 @@ MonoBehaviour:
   gunAudioSource: {fileID: 0}
   gunShotClip: {fileID: 8300000, guid: 0ff3701aea7818b4ea502331b4fbc18f, type: 3}
   pingAudioSource: {fileID: 0}
-  pingClip: {fileID: 0}
+  pingClip: {fileID: 8300000, guid: 056e64f34df16534a89b11cdc93f239e, type: 3}
   audioSource: {fileID: 0}
