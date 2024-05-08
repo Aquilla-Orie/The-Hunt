@@ -1,40 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    //public static AudioManager instance;
-
     [Header("Match Start Audio")]
-    public AudioSource matchStartAudioSource;
     public AudioClip matchStartClip;
 
     [Header("Gun Audio")]
-    public AudioSource gunAudioSource;
     public AudioClip gunShotClip;
 
     [Header("Ping Audio")]
-    public AudioSource pingAudioSource;
     public AudioClip pingClip;
 
+    [Header("Place Item Audio")]
+    public AudioClip placeItemClip;
+
     public AudioSource audioSource;
-
-    private void Awake()
-    {
-        //if (instance == null)
-        //{
-        //    instance = this;
-        //}
-        //else
-        //{
-        //    Destroy(gameObject);
-        //    return;
-        //}
-
-        //DontDestroyOnLoad(gameObject);
-    }
 
     private void Start()
     {
@@ -45,7 +27,6 @@ public class AudioManager : MonoBehaviour
             audioSource.Play();
         }
     }
-
 
     public void PlayGunShot()
     {
@@ -61,6 +42,15 @@ public class AudioManager : MonoBehaviour
         if (audioSource != null && pingClip != null)
         {
             audioSource.clip = pingClip;
+            audioSource.Play();
+        }
+    }
+
+    public void PlayPlaceItemAudio()
+    {
+        if (audioSource != null && placeItemClip != null)
+        {
+            audioSource.clip = placeItemClip;
             audioSource.Play();
         }
     }

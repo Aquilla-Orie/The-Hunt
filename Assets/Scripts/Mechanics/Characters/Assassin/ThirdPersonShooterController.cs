@@ -19,6 +19,7 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
     [SerializeField] private Animator animator;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip gunClip;
+    [SerializeField] private AudioClip placeItemClip;
 
     private string globalKillsLeaderboardKey = "globalKills";
     private string globalDamageLeaderboardKey = "globalDamage";
@@ -126,6 +127,8 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_PlaceItem(string name)
     {
+        audioSource.PlayOneShot(placeItemClip);
+
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
 

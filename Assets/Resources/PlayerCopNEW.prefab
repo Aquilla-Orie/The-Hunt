@@ -1213,7 +1213,8 @@ MonoBehaviour:
   animator: {fileID: 5414967076965545669}
   audioSource: {fileID: 9218429657024041468}
   gunClip: {fileID: 8300000, guid: 0ff3701aea7818b4ea502331b4fbc18f, type: 3}
-  pingClip: {fileID: 8300000, guid: ff3b9202f7ada4d429ee2bfa9a3ae811, type: 3}
+  pingClip: {fileID: 8300000, guid: 056e64f34df16534a89b11cdc93f239e, type: 3}
+  placeItemClip: {fileID: 8300000, guid: ff3b9202f7ada4d429ee2bfa9a3ae811, type: 3}
   muzzleFlash: {fileID: 5434383172356065418}
 --- !u!82 &9218429657024041468
 AudioSource:
@@ -1323,13 +1324,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6da93866c89a5e44f8a999b352fdece5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  matchStartAudioSource: {fileID: 0}
   matchStartClip: {fileID: 8300000, guid: 7990e52431df3dc47b614acbf4d80348, type: 3}
-  gunAudioSource: {fileID: 0}
   gunShotClip: {fileID: 8300000, guid: 0ff3701aea7818b4ea502331b4fbc18f, type: 3}
-  pingAudioSource: {fileID: 0}
   pingClip: {fileID: 8300000, guid: 056e64f34df16534a89b11cdc93f239e, type: 3}
-  audioSource: {fileID: 0}
+  placeItemClip: {fileID: 8300000, guid: ff3b9202f7ada4d429ee2bfa9a3ae811, type: 3}
+  audioSource: {fileID: 9218429657024041468}
 --- !u!1 &1667095740883463517
 GameObject:
   m_ObjectHideFlags: 0
@@ -7116,7 +7115,6 @@ GameObject:
   - component: {fileID: 3153150288876088253}
   - component: {fileID: 6405958179830780717}
   - component: {fileID: 8848235306490414620}
-  - component: {fileID: 6240538664763595306}
   m_Layer: 0
   m_Name: PlayerCopNEW
   m_TagString: Cop
@@ -7250,25 +7248,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6240538664763595306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3153150288876088252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6da93866c89a5e44f8a999b352fdece5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  matchStartAudioSource: {fileID: 0}
-  matchStartClip: {fileID: 8300000, guid: 7990e52431df3dc47b614acbf4d80348, type: 3}
-  gunAudioSource: {fileID: 0}
-  gunShotClip: {fileID: 8300000, guid: 0ff3701aea7818b4ea502331b4fbc18f, type: 3}
-  pingAudioSource: {fileID: 0}
-  pingClip: {fileID: 8300000, guid: 056e64f34df16534a89b11cdc93f239e, type: 3}
-  audioSource: {fileID: 0}
 --- !u!1 &3221467002339218806
 GameObject:
   m_ObjectHideFlags: 0
@@ -11002,11 +10981,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57590bfa12a1042418484898d1a133ef, type: 3}
---- !u!224 &6446302291304300077 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 7798148331601252245, guid: 57590bfa12a1042418484898d1a133ef, type: 3}
-  m_PrefabInstance: {fileID: 3840808868231737784}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6446302291786548752 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7798148331043436456, guid: 57590bfa12a1042418484898d1a133ef, type: 3}
@@ -11018,6 +10992,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55e5056d7212ab340a91fbe85f25b839, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &6446302291304300077 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7798148331601252245, guid: 57590bfa12a1042418484898d1a133ef, type: 3}
+  m_PrefabInstance: {fileID: 3840808868231737784}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7133610397641923205
 PrefabInstance:
   m_ObjectHideFlags: 0

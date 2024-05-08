@@ -74,7 +74,6 @@ public class Leaderboard : MonoBehaviourPunCallbacks
         });
         yield return new WaitWhile(() => !done);
 
-        // Fetch leaderboard after submitting the score
         yield return StartCoroutine(FetchLeaderboardRoutine(leaderboardKey));
     }
 
@@ -85,15 +84,13 @@ public class Leaderboard : MonoBehaviourPunCallbacks
         playerDamageText.text = "Damage\n";
         playerDeathsText.text = "Deaths\n";
 
-        
-
         for (int i = 0; i < leaderboardMembers.Length; i++)
         {
             string playerName = string.IsNullOrEmpty(leaderboardMembers[i].player.name) ? leaderboardMembers[i].player.id.ToString() : leaderboardMembers[i].player.name;
             int playerScore = leaderboardMembers[i].score;
 
             playerNamesText.text += playerName + "\n";
-            // Update UI
+
             if (leaderboardKey.Equals(globalKillsLeaderboardKey))
             {
                 playerKillsText.text += playerScore.ToString() + "\n";
