@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using LootLocker.Requests;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
 {
     public float maxHealth = 100f;
     public float currentHealth;
 
-    public int kills;
-    public int deaths;
-    public int damageDealt;
+    int deaths = 0;
+
+    private string globalDeathsLeaderboardKey = "globalDeaths";
 
     Renderer[] visuals;
 
@@ -21,24 +22,23 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
 
     void Start()
     {
+        gameManager = FindObjectOfType<GameManagerScript>();
+        leaderboard = FindObjectOfType<Leaderboard>();
         visuals = GetComponentsInChildren<Renderer>();
 
         currentHealth = maxHealth;
         healthBar.SetSliderMax(maxHealth);
     }
 
-    void Update()
-    {
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-    }
-
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
         healthBar.SetSlider(currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
     }
 
     public void RestoreHealth(float amount)
@@ -61,10 +61,9 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
 
         if (photonView.IsMine)
         {
-            leaderboard.SubmitDeath();
+            leaderboard.SubmitScore(++deaths, globalDeathsLeaderboardKey);
+            gameManager.PlayerDead(gameObject.tag);
         }
-
-        gameManager.GameOver();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -81,7 +80,7 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
 
     void VisualiseRenderers(bool state)
     {
-        foreach(var renderer in visuals)
+        foreach (var renderer in visuals)
         {
             renderer.enabled = state;
         }

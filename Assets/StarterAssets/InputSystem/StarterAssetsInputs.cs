@@ -1,4 +1,5 @@
 using Newtonsoft.Json.Linq;
+using System;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 using UnityEngine.InputSystem;
@@ -15,9 +16,14 @@ namespace StarterAssets
         public bool sprint;
         public bool aim;
         public bool shoot;
-        public bool interact;
+		public bool interact;
+		public bool inventoryLeft;
+		public bool inventoryRight;
+		public bool inventoryUse;
         public bool leaderboard;
-        public bool ping;
+		public bool ping;
+		public bool exit;
+		public bool browse;
 
         [Header("Movement Settings")]
 		public bool analogMovement;
@@ -65,17 +71,61 @@ namespace StarterAssets
 			InteractInput(value.isPressed);
 		}
 
-		public void OnLeaderboard(InputValue value)
-		{
-			LeaderboardInput(value.isPressed);
-		}
-				
-		public void OnPing(InputValue value)
-		{
-			PingInput(value.isPressed);
-		}
-#endif
+        public void OnInventoryLeft(InputValue value)
+        {
+            InventoryLeftInput(value.isPressed);
+        }
 
+		public void OnInventoryRight(InputValue value)
+        {
+            InventoryRightInput(value.isPressed);
+        }
+
+		public void OnInventoryUse(InputValue value)
+        {
+            InventoryUseInput(value.isPressed);
+        }
+
+        public void OnLeaderboard(InputValue value)
+        {
+            LeaderboardInput(value.isPressed);
+        }
+
+        public void OnPing(InputValue value)
+        {
+            PingInput(value.isPressed);
+        }
+
+		public void OnExitInteraction(InputValue value)
+        {
+            ExitInput(value.isPressed);
+        }
+
+        public void OnBrowseCamera(InputValue value)
+        {
+            BrowseInput(value.isPressed);
+        }
+
+#endif
+        private void ExitInput(bool newExitState)
+        {
+			exit = newExitState;
+        }
+
+        private void BrowseInput(bool newBrowseState)
+        {
+            browse = newBrowseState;
+        }
+
+        private void PingInput(bool newPingState)
+        {
+			ping = newPingState;
+        }
+
+        private void LeaderboardInput(bool newLeaderboardState)
+        {
+            leaderboard = newLeaderboardState;
+        }
 
         public void MoveInput(Vector2 newMoveDirection)
 		{
@@ -112,15 +162,19 @@ namespace StarterAssets
 			interact = newInteractState;
 		}
 
-        public void LeaderboardInput(bool newLeaderboardState)
-        {
-            leaderboard = newLeaderboardState;
-        }
+		public void InventoryLeftInput(bool newInventoryState)
+		{
+			inventoryLeft = newInventoryState;
+		}
+		public void InventoryRightInput(bool newInventoryState)
+		{
+			inventoryRight = newInventoryState;
+		}
 
-        public void PingInput(bool newPingState)
-        {
-            ping = newPingState;
-        }
+		public void InventoryUseInput(bool newInventoryState)
+		{
+			inventoryUse = newInventoryState;
+		}
 
         private void OnApplicationFocus(bool hasFocus)
 		{

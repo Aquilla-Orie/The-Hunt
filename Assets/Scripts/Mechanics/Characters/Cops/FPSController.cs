@@ -14,9 +14,18 @@ public class FPSController : MonoBehaviourPunCallbacks
     [SerializeField] private float normalSensitivity;
     [SerializeField] private float aimSensitivity;
     [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
+    [SerializeField] private LayerMask pingLayerMask;
     //[SerializeField] private Transform debugTransform;
     [SerializeField] private Transform spawnBulletPosition;
     [SerializeField] private Animator animator;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip gunClip;
+    [SerializeField] private AudioClip pingClip;
+    [SerializeField] private AudioClip placeItemClip;
+
+    private string globalKillsLeaderboardKey = "globalKills";
+    private string globalDamageLeaderboardKey = "globalDamage";
+    private string globalDeathsLeaderboardKey = "globalDeaths";
 
     public ParticleSystem muzzleFlash;
 
@@ -24,8 +33,12 @@ public class FPSController : MonoBehaviourPunCallbacks
     private StarterAssetsInputs starterAssetsInputs;
     private Leaderboard leaderboard;
 
+    int kills = 0;
+    int damage = 0;
+
     void Awake()
     {
+        pingLayerMask = LayerMask.GetMask("Default", "PingMarker");
         thirdPersonController = GetComponent<ThirdPersonController>();
         starterAssetsInputs = GetComponent<StarterAssetsInputs>();
         leaderboard = FindObjectOfType<Leaderboard>();
@@ -62,7 +75,7 @@ public class FPSController : MonoBehaviourPunCallbacks
 
                 if (starterAssetsInputs.shoot)
                 {
-                    photonView.RPC("RPC_Shoot", RpcTarget.All); 
+                    photonView.RPC("RPC_Shoot", RpcTarget.All, mouseWorldPosition);
                 }
             }
             else
@@ -80,19 +93,21 @@ public class FPSController : MonoBehaviourPunCallbacks
                 photonView.RPC("RPC_Ping", RpcTarget.All);
                 starterAssetsInputs.ping = false;
             }
-            
         }
     }
 
     [PunRPC]
-    void RPC_Shoot()
+    void RPC_Shoot(Vector3 mousePosition)
     {
         muzzleFlash.Play();
-        Ray ray = new Ray(spawnBulletPosition.position, spawnBulletPosition.forward);
+        audioSource.PlayOneShot(gunClip);
+
+        Vector3 aimDirection = (mousePosition - spawnBulletPosition.position).normalized;
+        Ray ray = new Ray(spawnBulletPosition.position, aimDirection);
 
         if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
-            if (hit.collider.name == "PlayerAssassin")
+            if (hit.collider.CompareTag("Assassin"))
             {
                 var enemyPlayerStats = hit.collider.GetComponent<PlayerStats>();
 
@@ -102,45 +117,64 @@ public class FPSController : MonoBehaviourPunCallbacks
 
                     if (photonView.IsMine)
                     {
-                        leaderboard.SubmitDamage(10);
+                        leaderboard.SubmitScore(++damage, globalDamageLeaderboardKey);
                     }
 
                     if (enemyPlayerStats.currentHealth <= 0)
                     {
                         if (photonView.IsMine)
                         {
-                            leaderboard.SubmitKill();
+                            leaderboard.SubmitScore(++kills, globalKillsLeaderboardKey);
                         }
 
                         enemyPlayerStats.Die();
                     }
                 }
             }
+           
         }
 
         starterAssetsInputs.shoot = false;
     }
 
+
     [PunRPC]
     void RPC_Ping()
     {
-        Vector3 mouseWorldPosition = Vector3.zero;
+        audioSource.PlayOneShot(pingClip);
+        Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, pingLayerMask))
+        {
+            if (raycastHit.collider.gameObject.CompareTag("PingMarker"))
+            {
+                Destroy(raycastHit.collider.gameObject);
+            }
+            else
+            {
+                GameObject pingGO = Instantiate(pingMarker, raycastHit.point, Quaternion.identity);
+                Destroy(pingGO, 10f);
+            }
+        }
+    }
+
+    [PunRPC]
+    void RPC_PlaceItem(string name)
+    {
+        audioSource.PlayOneShot(placeItemClip);
 
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
 
-        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f))
         {
-            mouseWorldPosition = raycastHit.point;
-            //debugTransform.position = raycastHit.point;
-
-            if (raycastHit.collider.gameObject.tag == "PingMarker")
-            {
-                Destroy(raycastHit.collider);
-            }
+            GameObject item = PhotonNetwork.Instantiate(name, raycastHit.point, Quaternion.identity);
         }
+    }
 
-        GameObject pingGO = Instantiate(pingMarker, mouseWorldPosition, Quaternion.identity);
-        Destroy(pingGO, 10f); 
+    public void PlaceItem(string name)
+    {
+        photonView.RPC("RPC_PlaceItem", RpcTarget.All, name);
     }
 }

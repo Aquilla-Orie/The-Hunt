@@ -7,6 +7,8 @@ TagManager:
   - CinemachineTarget
   - HealthPack
   - PingMarker
+  - Assassin
+  - Cop
   layers:
   - Default
   - TransparentFX
