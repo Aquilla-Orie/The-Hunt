@@ -23,9 +23,9 @@ public class FPSController : MonoBehaviourPunCallbacks
     [SerializeField] private AudioClip pingClip;
     [SerializeField] private AudioClip placeItemClip;
 
-
     private string globalKillsLeaderboardKey = "globalKills";
     private string globalDamageLeaderboardKey = "globalDamage";
+    private string globalDeathsLeaderboardKey = "globalDeaths";
 
     public ParticleSystem muzzleFlash;
 
@@ -33,7 +33,8 @@ public class FPSController : MonoBehaviourPunCallbacks
     private StarterAssetsInputs starterAssetsInputs;
     private Leaderboard leaderboard;
 
-    int score = 0;
+    int kills = 0;
+    int damage = 0;
 
     void Awake()
     {
@@ -116,14 +117,14 @@ public class FPSController : MonoBehaviourPunCallbacks
 
                     if (photonView.IsMine)
                     {
-                        leaderboard.SubmitScore(++score, globalDamageLeaderboardKey);
+                        leaderboard.SubmitScore(++damage, globalDamageLeaderboardKey);
                     }
 
                     if (enemyPlayerStats.currentHealth <= 0)
                     {
                         if (photonView.IsMine)
                         {
-                            leaderboard.SubmitScore(++score, globalKillsLeaderboardKey);
+                            leaderboard.SubmitScore(++kills, globalKillsLeaderboardKey);
                         }
 
                         enemyPlayerStats.Die();
