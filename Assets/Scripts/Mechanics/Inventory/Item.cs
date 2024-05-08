@@ -25,6 +25,6 @@ public class Item : Interactable
 
     public virtual void Use(InteractionManager interactor = null)
     {
-
+        CanInteract = false;
     }
 }

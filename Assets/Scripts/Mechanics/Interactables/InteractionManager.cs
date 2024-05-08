@@ -45,7 +45,8 @@ public class InteractionManager : MonoBehaviour
         Interactable interactable = other.GetComponent<Interactable>();
         if (interactable != null)
         {
-            _interactables.Add(interactable);
+            if(interactable.CanInteract)
+                _interactables.Add(interactable);
         }
     }
 

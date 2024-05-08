@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class InventoryUI : MonoBehaviour
         ItemUI itemUI = Instantiate(_itemUIPrefab, _inventoryUIPanel);
         item.ItemUI = itemUI;
         itemUI.UpdateItemCount(1);
+        itemUI.SetItemImage(item.Image);
         _inventoryUIItems.Add(name, new KeyValuePair<Item, int>(item, count));
         //Set item properties
     }
@@ -44,6 +46,18 @@ public class InventoryUI : MonoBehaviour
             _inventoryUIItems[name] = new KeyValuePair<Item, int>(item, count);
             item.ItemUI.UpdateItemCount(_inventoryUIItems[name].Value);
             return;
+        }
+    }
+
+    public void SelectItem(Item item)
+    {
+        foreach (var i in _inventoryUIItems.Values)
+        {
+            i.Key.ItemUI.Unselected();
+            if (i.Key.Name.Equals(item.Name))
+            {
+                i.Key.ItemUI.Selected();
+            }
         }
     }
 }

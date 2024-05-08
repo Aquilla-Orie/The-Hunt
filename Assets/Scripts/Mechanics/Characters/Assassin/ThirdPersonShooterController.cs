@@ -131,16 +131,7 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
 
         if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f))
         {
-            //if (raycastHit.collider.gameObject.CompareTag("PingMarker"))
-            //{
-            //    Destroy(raycastHit.collider.gameObject);
-            //}
-            //else
-            //{
-            //    GameObject pingGO = Instantiate(pingMarker, raycastHit.point, Quaternion.identity);
-            //    Destroy(pingGO, 10f);
-            //}
-            GameObject pingGO = PhotonNetwork.Instantiate(name, raycastHit.point, Quaternion.identity);
+            GameObject item = PhotonNetwork.Instantiate(name, raycastHit.point, Quaternion.identity);
         }
     }
 

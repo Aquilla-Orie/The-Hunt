@@ -21,7 +21,6 @@ public class HealthPack : Item
         {
             playerStats.RestoreHealth(restoreAmount);
             Debug.Log("Player health restored by healthpack");
-            Destroy(gameObject);
         }
     }
 

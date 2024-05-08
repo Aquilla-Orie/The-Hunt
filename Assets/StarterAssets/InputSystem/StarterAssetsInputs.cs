@@ -22,6 +22,8 @@ namespace StarterAssets
 		public bool inventoryUse;
         public bool leaderboard;
 		public bool ping;
+		public bool exit;
+		public bool browse;
 
         [Header("Movement Settings")]
 		public bool analogMovement;
@@ -94,10 +96,26 @@ namespace StarterAssets
             PingInput(value.isPressed);
         }
 
+		public void OnExitInteraction(InputValue value)
+        {
+            ExitInput(value.isPressed);
+        }
 
-
+        public void OnBrowseCamera(InputValue value)
+        {
+            BrowseInput(value.isPressed);
+        }
 
 #endif
+        private void ExitInput(bool newExitState)
+        {
+			exit = newExitState;
+        }
+
+        private void BrowseInput(bool newBrowseState)
+        {
+            browse = newBrowseState;
+        }
 
         private void PingInput(bool newPingState)
         {

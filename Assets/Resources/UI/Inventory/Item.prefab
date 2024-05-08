@@ -110,6 +110,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _itemCountText: {fileID: 1944477298353277503}
+  _itemBackground: {fileID: 1944477296729454279}
+  _itemImage: {fileID: 1944477298414218031}
 --- !u!1 &1944477297234300973
 GameObject:
   m_ObjectHideFlags: 0

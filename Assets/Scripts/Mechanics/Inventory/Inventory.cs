@@ -27,9 +27,6 @@ public class Inventory : MonoBehaviour
     public void InitializeInventory()
     {
         //Primes up the inventory for use
-        _inventoryIndex = 0;
-        SelectItem(_inventoryIndex);
-
         if (_items.Count > 0)
         {
             foreach (Item item in _items)
@@ -37,6 +34,10 @@ public class Inventory : MonoBehaviour
                 AddItem(item);
             }
         }
+
+        _inventoryIndex = 0;
+        SelectItem(_inventoryIndex);
+
     }
 
     private void Update()
@@ -44,12 +45,14 @@ public class Inventory : MonoBehaviour
         if (_starterAssetsInputs.inventoryRight)
         {
             _inventoryIndex++;
+            if (_inventoryIndex >= InventoryItems.Count) _inventoryIndex = InventoryItems.Count - 1;
             SelectItem(_inventoryIndex);
             
         }
         if (_starterAssetsInputs.inventoryLeft)
         {
             _inventoryIndex--;
+            if (_inventoryIndex < 0) _inventoryIndex = 0;
             SelectItem(_inventoryIndex);
         }
 
@@ -106,12 +109,9 @@ public class Inventory : MonoBehaviour
 
     public void SelectItem(int index)
     {
-        Debug.Log($"index before clamp {index}");
-        index = Mathf.Clamp(index, 0, InventoryItems.Count);
-        if (InventoryItems.Count <= 0 || index >= InventoryItems.Count) return;
-        Debug.Log($"Index after clamp {index}");
+        if (InventoryItems.Count <= 0) return;
         EquippedItem = InventoryItems.Values.ToList()[index].Key;
-        Debug.Log($"Equipped item is {EquippedItem.Name}");
+        _inventoryUI.SelectItem(EquippedItem);
     }
 
     public void UseItem(Item item)
