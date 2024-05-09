@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 using Photon.Pun;
+using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.SocialPlatforms;
+
+
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 using UnityEngine.InputSystem;
 #endif
@@ -106,8 +110,6 @@ namespace StarterAssets
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
 
-
-
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
         private PlayerInput _playerInput;
 #endif
@@ -115,8 +117,18 @@ namespace StarterAssets
         private CharacterController _controller;
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
+
+        //leaderboard
         private GameObject leaderboardCanvas;
         private GameObject leaderboardPanel;
+        private string globalKillsLeaderboardKey = "globalKills";
+        private string globalDamageLeaderboardKey = "globalDamage";
+        private string globalDeathsLeaderboardKey = "globalDamage";
+        int kills = 0;
+        int damage = 0;
+        int deaths = 0;
+        private Leaderboard leaderboard;
+
 
         private bool _rotateOnMove = true;
 
@@ -157,6 +169,7 @@ namespace StarterAssets
 #else
 			Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
 #endif
+            leaderboard = FindObjectOfType<Leaderboard>();
             leaderboardCanvas = GameObject.Find("LeaderboardCanvas");
             if (leaderboardCanvas == null)
             {
@@ -487,6 +500,10 @@ namespace StarterAssets
 
                     leaderboardPanel.SetActive(!currentState);
                     Debug.Log("Leaderboard Panel state changed: " + (!currentState ? "Active" : "Inactive"));
+                    if (currentState)
+                    {
+                        leaderboard.FetchLeaderboardData();
+                    }
                 }
                 else
                 {

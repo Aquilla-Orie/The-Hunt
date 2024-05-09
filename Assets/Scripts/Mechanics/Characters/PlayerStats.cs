@@ -10,7 +10,7 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
     public float maxHealth = 100f;
     public float currentHealth;
 
-    int score = 0;
+    int deaths = 0;
 
     private string globalDeathsLeaderboardKey = "globalDeaths";
 
@@ -30,18 +30,15 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
         healthBar.SetSliderMax(maxHealth);
     }
 
-    void Update()
-    {
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-    }
-
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
         healthBar.SetSlider(currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
     }
 
     public void RestoreHealth(float amount)
@@ -64,8 +61,7 @@ public class PlayerStats : MonoBehaviourPunCallbacks, IPunObservable
 
         if (photonView.IsMine)
         {
-            leaderboard.SubmitScore(++score, globalDeathsLeaderboardKey);
-
+            leaderboard.SubmitScore(++deaths, globalDeathsLeaderboardKey);
             gameManager.PlayerDead(gameObject.tag);
         }
     }

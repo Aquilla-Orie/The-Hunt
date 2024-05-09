@@ -30,7 +30,8 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
     private StarterAssetsInputs starterAssetsInputs;
     private Leaderboard leaderboard;
 
-    int score = 0;
+    int kills = 0;
+    int damage = 0;
 
     void Awake()
     {
@@ -106,14 +107,14 @@ public class ThirdPersonShooterController : MonoBehaviourPunCallbacks
 
                 if (photonView.IsMine)
                 {
-                    leaderboard.SubmitScore(++score, globalDamageLeaderboardKey);
+                    leaderboard.SubmitScore(++damage, globalDamageLeaderboardKey);
                 }
 
                 if (enemyPlayerStats.currentHealth <= 0)
                 {
                     if (photonView.IsMine)
                     {
-                        leaderboard.SubmitScore(++score, globalKillsLeaderboardKey);
+                        leaderboard.SubmitScore(++kills, globalKillsLeaderboardKey);
                     }
 
                     enemyPlayerStats.Die();
