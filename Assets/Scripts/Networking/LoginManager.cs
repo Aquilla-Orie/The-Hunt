@@ -57,7 +57,7 @@ public class LoginManager : MonoBehaviour
                 return;
             }
             //Ignore the GetNickName function
-            else if(response.statusCode == 200)
+            else if (response.statusCode == 200)
             {
                 LootLockerSDKManager.GetPlayerName((response) =>
                 {
@@ -92,7 +92,7 @@ public class LoginManager : MonoBehaviour
     {
         Debug.Log($"Nickname is {_nickname}");
         PlayerManager.Instance.Nickname = _nickname;
-        SceneManager.LoadScene("Matchmaking");
+        SceneManager.LoadScene("GameLevel");
     }
 
     public void SetNickName()
