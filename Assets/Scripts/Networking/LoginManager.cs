@@ -92,7 +92,7 @@ public class LoginManager : MonoBehaviour
     {
         Debug.Log($"Nickname is {_nickname}");
         PlayerManager.Instance.Nickname = _nickname;
-        SceneManager.LoadScene("Playground");
+        SceneManager.LoadScene("Matchmaking");
     }
 
     public void SetNickName()

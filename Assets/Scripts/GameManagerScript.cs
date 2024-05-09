@@ -1,3 +1,5 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +10,24 @@ public class GameManagerScript : MonoBehaviour
     public GameObject playerDeadUI;
     public GameObject gameOverUI;
     public GameObject gameWinUI;
+
+    private static GameManagerScript _instance;
+
+    public static GameManagerScript Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<GameManagerScript>();
+                if (_instance == null)
+                {
+                    Debug.LogError("GameManagerScript instance is not found in the scene!");
+                }
+            }
+            return _instance;
+        }
+    }
 
     public void PlayerDead(string playerTag)
     {
@@ -47,7 +67,7 @@ public class GameManagerScript : MonoBehaviour
         Invoke("LoadLobbyScene", 10f);
     }
 
-    public void Play()
+    public void NextScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
@@ -69,6 +89,49 @@ public class GameManagerScript : MonoBehaviour
 
     public void MainMenu()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void LoadAssassinLoadoutScene()
+    {
+        //SceneManager.LoadScene("Loadoutstat");
+    }
+
+    public void LoadCopsLoadoutScene()
+    {
+        SceneManager.LoadScene("Loadoutstat");
+    }
+
+    public void LoadAssassinScene()
+    {
+        SceneManager.LoadScene("assasin");
+    }
+
+    public void LoadCopsSelectionScene()
+    {
+        SceneManager.LoadScene("cop selection");
+    }
+
+    public void LoadCopsScene()
+    {
+        if (PhotonNetwork.LocalPlayer.IsLocal)
+        {
+            Player localPlayer = PhotonNetwork.LocalPlayer;
+
+            foreach (Player player in PhotonNetwork.CurrentRoom.Players.Values)
+            {
+                if (player == localPlayer)
+                {
+                    PhotonNetwork.LoadLevel("hacker ability");
+                    break;
+                }
+            }
+        }
+    }
+
+    public void LoadGameLevelScene()
+    {
+        SceneManager.LoadScene("GameLevel");
+        NetworkManager.Instance.SpawnPlayers();
     }
 }

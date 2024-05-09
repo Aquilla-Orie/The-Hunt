@@ -9,6 +9,8 @@ using System;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
+    public static NetworkManager Instance;
+
     private string _playerName = "";
     private string _gameVersion = "0.9";
     private List<RoomInfo> _createdRooms = new List<RoomInfo>();
@@ -26,6 +28,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject _playerCop;
 
     [SerializeField] private GameObject _networkUICanvas;
+    [SerializeField] private GameObject _matchmakingCanvas;
     [SerializeField] private Transform _roomScrollView;
     [SerializeField] private GameObject _roomDetailsPanel;
     [SerializeField] private TMP_InputField _roomNameInput;
@@ -36,6 +39,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private Player _player;
 
     [SerializeField] private GameObject _door;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -50,7 +65,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         _playerName = PlayerManager.Instance.Nickname;
 
-        PlayAsAssassin();
+        PlayAsAssassin(); // Or PlayAsCop(); 
     }
 
     private void Update()
@@ -232,46 +247,26 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Debug.Log("===Connected to Room");
         print(PhotonNetwork.CurrentRoom.Players.Count);
 
-
         Player player = PhotonNetwork.CurrentRoom.Players.Last().Value;
         Debug.Log($"Nick {player.NickName}:::Play {_playerName} just joined the lobby");
         bool is_ass = (bool)player.CustomProperties["isAssassin"];
 
-        if (_isAssassin)
-        {
-            //_assassinCount = GetAssassinCount();
-            //PhotonNetwork.CurrentRoom.SetCustomProperties(_customRoomProperties);
-            //if (_assassinCount >= _maxAssassin) return;
-            PhotonNetwork.Instantiate(_playerAssassin.name, _assassinSpawnLocation.position, Quaternion.identity, 0);
-        }
-        else
-        {
-            _assassinCount = (bool)PhotonNetwork.CurrentRoom.CustomProperties["isAssassin"] ? 1 : 0;
-            _copCount = PhotonNetwork.CurrentRoom.Players.Count - _assassinCount;
-                //GameObject.FindGameObjectsWithTag("Cop").Length;
-            print($"Ass {_assassinCount} Before instantiation");
-            print($"Cop {_copCount} Before instantiation");
-            if (_copCount > _maxCops)
-                return;
+        _networkUICanvas.SetActive(false); 
+        _matchmakingCanvas.SetActive(true); 
 
-            Transform sl;
-            if (_spawnLocations.Count > 0)
-            {
-                sl = _spawnLocations[0];
-                _spawnLocations.RemoveAt(0);
-                PhotonNetwork.Instantiate(_playerCop.name, sl.position, Quaternion.identity, 0);
-            }
-            else
-                PhotonNetwork.Instantiate(_playerCop.name, new Vector2(2f, 26f), Quaternion.identity, 0);
+        CheckAndLoadNextScene(); 
+    }
 
-            //_copCount++;
-            if (_copCount >= _maxCops)
-            {
-                //Start game
-                _door.SetActive(false);
-            }
-        }
-        _networkUICanvas.SetActive(false);
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        // This is called whenever a new player enters the room
+        CheckAndLoadNextScene(); 
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        // This is called whenever a player leaves the room
+        CheckAndLoadNextScene(); 
     }
 
     public void PlayAsCop()
@@ -287,4 +282,75 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         _customRoomProperties["isAssassin"] = _isAssassin;
         PhotonNetwork.LocalPlayer.CustomProperties = _customRoomProperties;
     }
+
+    public void SpawnPlayers()
+    {
+        if (_isAssassin)
+        {
+            //_assassinCount = GetAssassinCount();
+            //PhotonNetwork.CurrentRoom.SetCustomProperties(_customRoomProperties);
+            //if (_assassinCount >= _maxAssassin) return;
+            PhotonNetwork.Instantiate(_playerAssassin.name, _assassinSpawnLocation.position, Quaternion.identity, 0);
+        }
+        else
+        {
+            _assassinCount = (bool)PhotonNetwork.CurrentRoom.CustomProperties["isAssassin"] ? 1 : 0;
+            _copCount = PhotonNetwork.CurrentRoom.Players.Count - _assassinCount;
+            //GameObject.FindGameObjectsWithTag("Cop").Length;
+            print($"Ass {_assassinCount} Before instantiation");
+            print($"Cop {_copCount} Before instantiation");
+            if (_copCount > _maxCops)
+                return;
+
+            Transform sl;
+            if (_spawnLocations.Count > 0)
+            {
+                sl = _spawnLocations[0];
+                _spawnLocations.RemoveAt(0);
+                PhotonNetwork.Instantiate(_playerCop.name, sl.position, Quaternion.identity, 0);
+            }
+            else
+                PhotonNetwork.Instantiate(_playerCop.name, new Vector2(-52f, 37f), Quaternion.identity, 0);
+
+            //_copCount++;
+            if (_copCount >= _maxCops)
+            {
+                //Start game
+                _door.SetActive(false);
+            }
+        }
+        _networkUICanvas.SetActive(false);
+    }
+
+    public void CheckAndLoadNextScene()
+    {
+        if (PhotonNetwork.CurrentRoom.PlayerCount >= 3)
+        {
+            bool localPlayerLoadedScene = false; 
+
+            foreach (Player player in PhotonNetwork.CurrentRoom.Players.Values)
+            {
+                bool is_ass = (bool)player.CustomProperties["isAssassin"];
+                Debug.Log($"Player {player.NickName} isAssassin: {is_ass}");
+
+                // Load scene only for the local player
+                if (PhotonNetwork.LocalPlayer == player && !localPlayerLoadedScene)
+                {
+                    if (is_ass)
+                    {
+                        Debug.Log($"Player {player.NickName} loading Assassin scene");
+                        GameManagerScript.Instance.LoadAssassinScene();
+                        localPlayerLoadedScene = true;
+                    }
+                    else
+                    {
+                        Debug.Log($"Player {player.NickName} loading Cops selection scene");
+                        GameManagerScript.Instance.LoadCopsSelectionScene();
+                        localPlayerLoadedScene = true;
+                    }
+                }
+            }
+        }
+    }
+
 }

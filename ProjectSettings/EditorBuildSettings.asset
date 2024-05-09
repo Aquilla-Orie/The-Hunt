@@ -7,40 +7,37 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 0
     path: Assets/Scenes/MainMenu.unity
-    guid: 00f721b007aafc741a9a0a509079bd70
-  - enabled: 1
-    path: Assets/Scenes/GameUIGameplay/MainMenu.unity
     guid: 483d573b45d69f64d9c2e005f742a1da
-  - enabled: 1
-    path: Assets/Scenes/GameUIGameplay/Play button.unity
+  - enabled: 0
+    path: Assets/Scenes/Play button.unity
     guid: 17b36ce8f18864845ab59d7a82805874
   - enabled: 1
     path: Assets/Scenes/Menu.unity
     guid: 4c2a758c919bbc342bf405c638800380
   - enabled: 1
-    path: Assets/Scenes/GameUIGameplay/Matchmaking.unity
+    path: Assets/Scenes/Matchmaking.unity
     guid: 2dba1025f8a6c5d46b1dd394f03dfccc
+  - enabled: 1
+    path: Assets/Scenes/assasin.unity
+    guid: 6cc50c87e594b5143bd9cc0d723817c8
+  - enabled: 1
+    path: Assets/Scenes/cop selection.unity
+    guid: a07be011068cc6842bcd9063b5b069cc
+  - enabled: 1
+    path: Assets/Scenes/hacker ability.unity
+    guid: 54af4ae1eed5f964cb3b175d25ea083f
   - enabled: 1
     path: Assets/Scenes/GameLevel.unity
     guid: f974b4816cc0db5448850505c6df389b
+  - enabled: 1
+    path: Assets/Scenes/inventory.unity
+    guid: f0467558dd796964cb40535e69fc246e
+  - enabled: 1
+    path: Assets/Scenes/Loadoutstat.unity
+    guid: 7e004eda98ef10e40bd05e7d24e04ce5
   - enabled: 0
     path: Assets/Scenes/Playground.unity
     guid: 874eb4928e4684b489e2681a62afe545
-  - enabled: 1
-    path: Assets/Scenes/GameUIGameplay/assasin.unity
-    guid: 6cc50c87e594b5143bd9cc0d723817c8
-  - enabled: 1
-    path: Assets/Scenes/GameUIGameplay/cop selection.unity
-    guid: a07be011068cc6842bcd9063b5b069cc
-  - enabled: 1
-    path: Assets/Scenes/GameUIGameplay/hacker ability.unity
-    guid: 54af4ae1eed5f964cb3b175d25ea083f
-  - enabled: 1
-    path: Assets/Scenes/GameUIGameplay/inventory.unity
-    guid: f0467558dd796964cb40535e69fc246e
-  - enabled: 1
-    path: Assets/Scenes/GameUIGameplay/Loadoutstat.unity
-    guid: 7e004eda98ef10e40bd05e7d24e04ce5
   - enabled: 0
     path: Assets/Scenes/Test.unity
     guid: c19d7ed60ae4a884a94c832886fe1264
